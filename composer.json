@@ -1,0 +1,55 @@
+{
+  "name": "assetkita/digital-signature",
+  "description": "Laravel digital signature package for Asset Kita.",
+  "keywords": [
+    "fintech",
+    "laravel",
+    "digital signature"
+  ],
+  "homepage": "https://assetkita.com",
+  "license": "LGPL-3.0",
+  "authors": [
+    {
+      "name": "Yoel Peter Chandra",
+      "email": "yoelpc@assetkita.com",
+      "role": "Full Stack Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "guzzlehttp/guzzle": "~5.3",
+    "illuminate/contracts": "5.5.*",
+    "illuminate/http": "5.5.*",
+    "illuminate/support": "5.5.*",
+    "illuminate/validation": "5.5.*",
+    "psr/http-message": "1.0.*"
+  },
+  "require-dev": {
+    "fzaninotto/faker": "~1.4",
+    "orchestra/testbench": "3.5",
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Assetku\\DigitalSignature\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Assetku\\DigitalSignature\\DigitalSignatureServiceProvider"
+      ],
+      "aliases": {
+        "DigitalSignature": "Assetku\\DigitalSignature\\Facades\\DigitalSignatureFacade::class"
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
