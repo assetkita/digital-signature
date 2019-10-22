@@ -207,7 +207,7 @@ driver:
 ```php
 // privy
 new \Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
-````
+```
 
 ### Get Enterprise Token
 
