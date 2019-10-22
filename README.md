@@ -93,7 +93,7 @@ Here is the following user instance for each driver:
 ```php
 // privy
 new \Assetku\DigitalSignature\Users\Privy\PrivyUser;
-````
+```
 
 ### Check Registration Status
 
@@ -123,7 +123,7 @@ driver. Here is the following user instance for each driver:
 ```php
 // privy
 new \Assetku\DigitalSignature\Users\Privy\PrivyUser;
-````
+```
 
 ### Upload Document
 
@@ -177,7 +177,7 @@ driver. Here is the following document instance for each driver:
 ```php
 // privy
 new \Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
-````
+```
 
 ### Check Document Status
 
