@@ -63,7 +63,7 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app->useEnvironmentPath(__DIR__ . '/../')
+        $app->useEnvironmentPath(__DIR__ . '/../..')
             ->loadEnvironmentFrom('.env.testing')
             ->bootstrapWith([
                 LoadEnvironmentVariables::class
