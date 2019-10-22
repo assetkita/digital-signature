@@ -165,6 +165,9 @@ return [
 ];
 ```
 
+When you set the recipients value, the order is matters. The recipient in first index must be reviewing/signing first,
+ after that the user in second index reviewing/signing, etc. 
+
 The upload document process will throws exceptions as follows:
 - GuzzleException
 - DigitalSignatureValidatorException (has errors attribute)
@@ -284,9 +287,15 @@ following events:
 - after-sign (after user has been signed)
 - after-review (after user has been reviewed)
 
-Testing
 
-The tests are written with `phpunit`. You can run the tests from the root of the project directory with the following command.
+## Testing
+
+The tests are written with `phpunit`. 
+
+Please provide a `.env.testing` file in root package directory with contents 
+same as `.env.example` before running test command.
+
+You can run the tests from the root of the project directory with the following command.
 
 ```bash
 vendor/bin/phpunit
