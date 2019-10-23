@@ -17,12 +17,34 @@ class DigitalSignatureUploadDocumentException extends HasErrorsException
     }
 
     /**
+     * Display error message for internal server error upload document status data
+     *
+     * @param  string  $message
+     * @return static
+     */
+    public static function internalServerError(string $message)
+    {
+        return new static($message, 500);
+    }
+
+    /**
+     * Display error message for service unavailable upload document status data
+     *
+     * @param  string  $message
+     * @return static
+     */
+    public static function serviceUnavailable(string $message)
+    {
+        return new static($message, 503);
+    }
+
+    /**
      * Display error message for unknown upload document issue
      *
      * @return static
      */
     public static function unknown()
     {
-        return new static('Unknown registration error', 500);
+        return new static('Unknown registration error', 600);
     }
 }
