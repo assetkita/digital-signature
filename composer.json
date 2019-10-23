@@ -37,10 +37,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Assetku\\DigitalSignature\\DigitalSignatureServiceProvider"
+        "Assetku\\DigitalSignature\\Providers\\DigitalSignatureServiceProvider"
       ],
       "aliases": {
-        "DigitalSignature": "Assetku\\DigitalSignature\\Facades\\DigitalSignatureFacade::class"
+        "DigitalSignature": "Assetku\\DigitalSignature\\Facades\\DigitalSignature::class"
       }
     }
   },
@@ -50,6 +50,6 @@
   "scripts": {
     "test": "vendor/bin/phpunit"
   },
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true
 }

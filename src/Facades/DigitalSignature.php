@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class DigitalSignatureFacade extends Facade
+class DigitalSignature extends Facade
 {
     /**
      * Initiate a mock expectation on the facade.

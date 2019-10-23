@@ -2,7 +2,7 @@
 
 namespace Assetku\DigitalSignature\tests;
 
-use Assetku\DigitalSignature\Facades\DigitalSignatureFacade;
+use Assetku\DigitalSignature\Facades\DigitalSignature;
 use Assetku\DigitalSignature\Providers\DigitalSignatureServiceProvider;
 use Faker\Factory;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
@@ -51,7 +51,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'DigitalSignature' => DigitalSignatureFacade::class
+            'DigitalSignature' => DigitalSignature::class
         ];
     }
 
