@@ -97,6 +97,9 @@ class Privy implements DigitalSignature
      */
     public function register(array $data)
     {
+        // privy only accept pattern 08123... or +628123... not (+62)8123... or 628123... so we need to formats it first
+        $data = $this->formatPrivyPhone($data);
+
         try {
             $this->validator->validate($data, new PrivyRegisterRule);
         } catch (DigitalSignatureValidatorException $e) {
@@ -108,14 +111,24 @@ class Privy implements DigitalSignature
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success registration
+            // on success
             if ($response->getStatusCode() === 201) {
                 return new PrivyUser($contents->data);
             }
 
-            // on failed registration
+            // on failed
             if ($response->getStatusCode() === 422) {
                 throw DigitalSignatureRegistrationException::failed($contents->message, $contents->errors);
+            }
+
+            // on internal server error
+            if ($response->getStatusCode() === 500) {
+                throw DigitalSignatureRegistrationException::internalServerError($contents->message);
+            }
+
+            // on service unavailable
+            if ($response->getStatusCode() === 503) {
+                throw DigitalSignatureRegistrationException::serviceUnavailable($contents->message);
             }
 
             throw DigitalSignatureRegistrationException::unknown();
@@ -150,20 +163,30 @@ class Privy implements DigitalSignature
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success registration status
+            // on success
             if ($response->getStatusCode() === 201) {
                 return new PrivyUser($contents->data);
             }
 
-            // on failed registration status
+            // on failed
             if ($response->getStatusCode() === 422) {
                 throw DigitalSignatureCheckRegistrationStatusException::failed($contents->message,
                     $contents->errors);
             }
 
-            // on not found registration status
+            // on not found
             if ($response->getStatusCode() === 404) {
                 throw DigitalSignatureCheckRegistrationStatusException::notFound($contents->message);
+            }
+
+            // on internal server error
+            if ($response->getStatusCode() === 500) {
+                throw DigitalSignatureCheckRegistrationStatusException::internalServerError($contents->message);
+            }
+
+            // on service unavailable
+            if ($response->getStatusCode() === 503) {
+                throw DigitalSignatureCheckRegistrationStatusException::serviceUnavailable($contents->message);
             }
 
             throw DigitalSignatureCheckRegistrationStatusException::unknown();
@@ -194,14 +217,24 @@ class Privy implements DigitalSignature
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success upload document
+            // on success
             if ($response->getStatusCode() === 201) {
                 return new PrivyDocument($contents->data);
             }
 
-            // on failed upload document
+            // on failed
             if ($response->getStatusCode() === 422) {
                 throw DigitalSignatureUploadDocumentException::failed($contents->message, $contents->errors);
+            }
+
+            // on internal server error
+            if ($response->getStatusCode() === 500) {
+                throw DigitalSignatureUploadDocumentException::internalServerError($contents->message);
+            }
+
+            // on service unavailable
+            if ($response->getStatusCode() === 503) {
+                throw DigitalSignatureUploadDocumentException::serviceUnavailable($contents->message);
             }
 
             throw DigitalSignatureUploadDocumentException::unknown();
@@ -236,14 +269,24 @@ class Privy implements DigitalSignature
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success document status
+            // on success
             if ($response->getStatusCode() === 200) {
                 return new PrivyDocument($contents->data);
             }
 
-            // on not found document status
+            // on not found
             if ($response->getStatusCode() === 404) {
                 throw DigitalSignatureCheckDocumentStatusException::notFound($contents->message);
+            }
+
+            // on internal server error
+            if ($response->getStatusCode() === 500) {
+                throw DigitalSignatureCheckDocumentStatusException::internalServerError($contents->message);
+            }
+
+            // on service unavailable
+            if ($response->getStatusCode() === 503) {
+                throw DigitalSignatureCheckDocumentStatusException::serviceUnavailable($contents->message);
             }
 
             throw DigitalSignatureCheckDocumentStatusException::unknown();
@@ -289,5 +332,28 @@ class Privy implements DigitalSignature
                 $this->password
             ]
         ]);
+    }
+
+    /**
+     * Format the phone number to be allowed to registered to privy phone number
+     *
+     * @param  array  $data
+     * @return array
+     */
+    protected function formatPrivyPhone(array $data)
+    {
+        $patterns = [
+            '/^\(\+62\)/',
+            '/^62/'
+        ];
+
+        foreach ($patterns as $pattern) {
+            $data['phone'] = preg_replace($pattern, '+62', $data['phone']);
+        }
+
+        // strip whitespace everywhere
+        $data['phone'] = str_replace(' ', '', $data['phone']);
+
+        return $data;
     }
 }
