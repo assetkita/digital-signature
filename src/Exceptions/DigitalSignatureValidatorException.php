@@ -13,6 +13,12 @@ class DigitalSignatureValidatorException extends HasErrorsException
      */
     public static function failed(string $message, array $errors)
     {
+        $errors = collect($errors)->mapWithKeys(function ($error, $index) {
+            return [
+                $index => $error[0]
+            ];
+        })->toArray();
+
         return new static($message, 422, null, $errors);
     }
 }

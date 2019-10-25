@@ -36,4 +36,19 @@ class HasErrorsException extends Exception
     {
         return $this->errors;
     }
+
+    /**
+     * Format the privy failed errors to be consistent
+     *
+     * @param  array  $errors
+     * @return array
+     */
+    protected static function formatPrivyFailedErrors(array $errors)
+    {
+        return collect($errors)->mapWithKeys(function ($error) {
+            return [
+                $error->field => $error->messages
+            ];
+        })->toArray();
+    }
 }
