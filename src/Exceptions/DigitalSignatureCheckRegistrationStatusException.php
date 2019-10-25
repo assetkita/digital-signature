@@ -13,6 +13,10 @@ class DigitalSignatureCheckRegistrationStatusException extends HasErrorsExceptio
      */
     public static function failed(string $message, array $errors)
     {
+        if (config('digital-signature.default') === 'privy') {
+            $errors = static::formatPrivyFailedErrors($errors);
+        }
+
         return new static($message, 422, null, $errors);
     }
 
