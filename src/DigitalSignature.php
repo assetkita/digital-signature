@@ -3,19 +3,41 @@
 namespace Assetku\DigitalSignature;
 
 use Assetku\DigitalSignature\Contracts\DigitalSignature as DigitalSignatureContract;
+use Assetku\DigitalSignature\Documents\Document;
+use Assetku\DigitalSignature\Documents\DocumentRecipients\DocumentRecipient;
+use Assetku\DigitalSignature\Documents\DocumentRecipients\Privy\PrivyDocumentRecipient;
+use Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusException;
+use Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
+use Assetku\DigitalSignature\Users\Privy\PrivyUser;
+use Assetku\DigitalSignature\Users\User;
 use GuzzleHttp\Exception\GuzzleException;
 
-class DigitalSignature implements DigitalSignatureContract
+class DigitalSignature
 {
     /**
      * @var DigitalSignature
      */
     protected $digitalSignature;
+
+    /**
+     * @var User
+     */
+    protected $user;
+
+    /**
+     * @var Document
+     */
+    protected $document;
+
+    /**
+     * @var DocumentRecipient
+     */
+    protected $documentRecipient;
 
     /**
      * DigitalSignature constructor.
@@ -139,5 +161,86 @@ class DigitalSignature implements DigitalSignatureContract
     public function getWebSDKEndpoint()
     {
         return $this->digitalSignature->getWebSDKEndpoint();
+    }
+
+    /**
+     * Set digital signature user
+     *
+     * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException
+     */
+    public function setUser()
+    {
+        switch (config('digital-signature.default')) {
+            case 'privy':
+                $this->user = PrivyUser::class;
+                break;
+            default:
+                throw DigitalSignatureDriverException::unknownDriver();
+                break;
+        }
+    }
+
+    /**
+     * Get digital signature user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set digital signature document
+     *
+     * @throws DigitalSignatureDriverException
+     */
+    public function setDocument()
+    {
+        switch (config('digital-signature.default')) {
+            case 'privy':
+                $this->document = PrivyDocument::class;
+                break;
+            default:
+                throw DigitalSignatureDriverException::unknownDriver();
+                break;
+        }
+    }
+
+    /**
+     * Get digital signature document
+     *
+     * @return Document
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * Set digital signature document recipient
+     *
+     * @throws DigitalSignatureDriverException
+     */
+    public function setDocumentRecipient()
+    {
+        switch (config('digital-signature.default')) {
+            case 'privy':
+                $this->documentRecipient = PrivyDocumentRecipient::class;
+                break;
+            default:
+                throw DigitalSignatureDriverException::unknownDriver();
+                break;
+        }
+    }
+
+    /**
+     * Get digital signature document recipient
+     *
+     * @return DocumentRecipient
+     */
+    public function getDocumentRecipient()
+    {
+        return $this->documentRecipient;
     }
 }
