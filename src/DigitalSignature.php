@@ -41,10 +41,20 @@ class DigitalSignature
 
     /**
      * DigitalSignature constructor.
+     *
+     * @throws DigitalSignatureDriverException
      */
     public function __construct()
     {
         $this->digitalSignature = resolve(DigitalSignatureContract::class);
+
+        try {
+            $this->setUser();
+            $this->setDocument();
+            $this->setDocumentRecipient();
+        } catch (DigitalSignatureDriverException $e) {
+            throw $e;
+        }
     }
 
     /**
