@@ -4,7 +4,6 @@ namespace Assetku\DigitalSignature\tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use DigitalSignature;
 use GuzzleHttp\Exception\GuzzleException;
 
 class CheckRegistrationStatusTest extends TestCase
@@ -19,7 +18,7 @@ class CheckRegistrationStatusTest extends TestCase
         $token = '9fce108d0276a9cdbcc6bb11d924380a1ec41576f8504276640b17c82d7de36f';
 
         try {
-            $user = DigitalSignature::checkRegistrationStatus($token);
+            $user = \DigitalSignature::checkRegistrationStatus($token);
         } catch (DigitalSignatureCheckRegistrationStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {
@@ -41,7 +40,7 @@ class CheckRegistrationStatusTest extends TestCase
         $token = '897fd0ba37c672980afecc92a979722b26f112e29554b26e82665de05a35a241';
 
         try {
-            $user = DigitalSignature::checkRegistrationStatus($token);
+            $user = \DigitalSignature::checkRegistrationStatus($token);
         } catch (DigitalSignatureCheckRegistrationStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {
@@ -63,7 +62,7 @@ class CheckRegistrationStatusTest extends TestCase
         $token = '02f70eaeaa0bc10d50d8181347a00af1b1a87fa63d3da8d37ceb58eafa366ab0';
 
         try {
-            $user = DigitalSignature::checkRegistrationStatus($token);
+            $user = \DigitalSignature::checkRegistrationStatus($token);
         } catch (DigitalSignatureCheckRegistrationStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {
