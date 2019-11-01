@@ -7,26 +7,6 @@ abstract class DocumentRecipient
     /**
      * @var string
      */
-    const ROLE_SIGNER = 'Signer';
-
-    /**
-     * @var string
-     */
-    const ROLE_REVIEWER = 'Reviewer';
-
-    /**
-     * @var string
-     */
-    const STATUS_COMPLETED = 'Completed';
-
-    /**
-     * @var string
-     */
-    const STATUS_IN_PROGRESS = 'In Progress';
-
-    /**
-     * @var string
-     */
     protected $id;
 
     /**
@@ -38,6 +18,34 @@ abstract class DocumentRecipient
      * @var string
      */
     protected $status;
+
+    /**
+     * Get signer role
+     *
+     * @return string
+     */
+    abstract public function getRoleSigner();
+
+    /**
+     * Get reviewer role
+     *
+     * @return string
+     */
+    abstract public function getRoleReviewer();
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    abstract public function getStatusCompleted();
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    abstract public function getStatusInProgress();
 
     /**
      * Get the digital signature document recipient's id
@@ -76,7 +84,7 @@ abstract class DocumentRecipient
      */
     public function isRoleSigner()
     {
-        return $this->role === static::ROLE_SIGNER;
+        return $this->role === $this->getRoleSigner();
     }
 
     /**
@@ -86,7 +94,7 @@ abstract class DocumentRecipient
      */
     public function isRoleReviewer()
     {
-        return $this->role === static::ROLE_REVIEWER;
+        return $this->role === $this->getRoleReviewer();
     }
 
     /**
@@ -96,7 +104,7 @@ abstract class DocumentRecipient
      */
     public function isStatusCompleted()
     {
-        return $this->status === static::STATUS_COMPLETED;
+        return $this->status === $this->getStatusCompleted();
     }
 
     /**
@@ -106,46 +114,6 @@ abstract class DocumentRecipient
      */
     public function isStatusInProgress()
     {
-        return $this->status === static::STATUS_IN_PROGRESS;
-    }
-
-    /**
-     * Get signer role
-     *
-     * @return string
-     */
-    public function getRoleSigner()
-    {
-        return static::ROLE_SIGNER;
-    }
-
-    /**
-     * Get reviewer role
-     *
-     * @return string
-     */
-    public function getRoleReviewer()
-    {
-        return static::ROLE_REVIEWER;
-    }
-
-    /**
-     * Get completed status
-     *
-     * @return string
-     */
-    public function getStatusCompleted()
-    {
-        return static::STATUS_COMPLETED;
-    }
-
-    /**
-     * Get in progress status
-     *
-     * @return string
-     */
-    public function getStatusInProgress()
-    {
-        return static::STATUS_IN_PROGRESS;
+        return $this->status === $this->getStatusInProgress();
     }
 }

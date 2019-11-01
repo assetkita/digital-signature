@@ -26,9 +26,11 @@ class PrivyUserRejectHandler
      */
     public function __construct($privyUserRejectHandler)
     {
-        $this->category = $privyUserRejectHandler->category;
-        $this->handler = $privyUserRejectHandler->handler;
-        $this->fileSupport = $privyUserRejectHandler->file_support;
+        if (is_object($privyUserRejectHandler)) {
+            $this->category = $privyUserRejectHandler->category;
+            $this->handler = $privyUserRejectHandler->handler;
+            $this->fileSupport = $privyUserRejectHandler->file_support;
+        }
     }
 
     /**

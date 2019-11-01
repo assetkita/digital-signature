@@ -182,7 +182,7 @@ class DigitalSignature
     {
         switch (config('digital-signature.default')) {
             case 'privy':
-                $this->user = PrivyUser::class;
+                $this->user = new PrivyUser;
                 break;
             default:
                 throw DigitalSignatureDriverException::unknownDriver();
@@ -209,7 +209,7 @@ class DigitalSignature
     {
         switch (config('digital-signature.default')) {
             case 'privy':
-                $this->document = PrivyDocument::class;
+                $this->document = new PrivyDocument;
                 break;
             default:
                 throw DigitalSignatureDriverException::unknownDriver();
@@ -236,7 +236,7 @@ class DigitalSignature
     {
         switch (config('digital-signature.default')) {
             case 'privy':
-                $this->documentRecipient = PrivyDocumentRecipient::class;
+                $this->documentRecipient = new PrivyDocumentRecipient;
                 break;
             default:
                 throw DigitalSignatureDriverException::unknownDriver();

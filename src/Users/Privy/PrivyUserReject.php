@@ -26,13 +26,15 @@ class PrivyUserReject
      */
     public function __construct($privyUserReject)
     {
-        $this->code = $privyUserReject->code;
-        $this->reason = $privyUserReject->reason;
+        if (is_object($privyUserReject)) {
+            $this->code = $privyUserReject->code;
+            $this->reason = $privyUserReject->reason;
 
-        if (isset($privyUserReject->handlers)) {
-            $this->handlers = array_map(function ($handler) {
-                return new PrivyUserRejectHandler($handler);
-            }, $privyUserReject->handlers);
+            if (isset($privyUserReject->handlers)) {
+                $this->handlers = array_map(function ($handler) {
+                    return new PrivyUserRejectHandler($handler);
+                }, $privyUserReject->handlers);
+            }
         }
     }
 
