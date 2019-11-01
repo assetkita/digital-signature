@@ -153,4 +153,54 @@ abstract class User
     {
         return $this->status === static::STATUS_REJECTED;
     }
+
+    /**
+     * Get verified status
+     *
+     * @return string
+     */
+    public function getStatusVerified()
+    {
+        return static::STATUS_VERIFIED;
+    }
+
+    /**
+     * Get waiting status
+     *
+     * @return string
+     */
+    public function getStatusWaiting()
+    {
+        return static::STATUS_WAITING;
+    }
+
+    /**
+     * Get registered status
+     *
+     * @return string
+     */
+    public function getStatusRegistered()
+    {
+        return static::STATUS_REGISTERED;
+    }
+
+    /**
+     * Get invalid status
+     *
+     * @return string
+     */
+    public function getStatusInvalid()
+    {
+        return static::STATUS_INVALID;
+    }
+
+    /**
+     * Get rejected status
+     *
+     * @return string
+     */
+    public function getStatusRejected()
+    {
+        return static::STATUS_REJECTED;
+    }
 }

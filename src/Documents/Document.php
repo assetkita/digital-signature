@@ -9,12 +9,12 @@ abstract class Document
     /**
      * @var string
      */
-    const DOCUMENT_TYPE_SERIAL = 'Serial';
+    const TYPE_SERIAL = 'Serial';
 
     /**
      * @var string
      */
-    const DOCUMENT_TYPE_PARALLEL = 'Parallel';
+    const TYPE_PARALLEL = 'Parallel';
 
     /**
      * @var string
@@ -89,5 +89,45 @@ abstract class Document
     public function isStatusInProgress()
     {
         return $this->status === static::STATUS_IN_PROGRESS;
+    }
+
+    /**
+     * Get serial type
+     *
+     * @return string
+     */
+    public function getTypeSerial()
+    {
+        return static::TYPE_SERIAL;
+    }
+
+    /**
+     * Get serial parallel
+     *
+     * @return string
+     */
+    public function getTypeParallel()
+    {
+        return static::TYPE_PARALLEL;
+    }
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    public function getStatusCompleted()
+    {
+        return static::STATUS_COMPLETED;
+    }
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    public function getStatusInProgress()
+    {
+        return static::STATUS_IN_PROGRESS;
     }
 }
