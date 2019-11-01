@@ -42,7 +42,7 @@ class PrivyDocument extends Document
      *
      * @param $privyDocument
      */
-    public function __construct($privyDocument)
+    public function __construct($privyDocument = null)
     {
         if (is_object($privyDocument)) {
             $this->token = $privyDocument->docToken;

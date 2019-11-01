@@ -24,7 +24,7 @@ class PrivyUserReject
      *
      * @param $privyUserReject
      */
-    public function __construct($privyUserReject)
+    public function __construct($privyUserReject = null)
     {
         if (is_object($privyUserReject)) {
             $this->code = $privyUserReject->code;

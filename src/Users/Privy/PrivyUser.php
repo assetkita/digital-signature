@@ -51,7 +51,7 @@ class PrivyUser extends User
      *
      * @param $privyUser
      */
-    public function __construct($privyUser)
+    public function __construct($privyUser = null)
     {
         if (is_object($privyUser)) {
             $this->email = $privyUser->email;

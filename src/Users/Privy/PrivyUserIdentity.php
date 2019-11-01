@@ -29,7 +29,7 @@ class PrivyUserIdentity
      *
      * @param $privyUserIdentity
      */
-    public function __construct($privyUserIdentity)
+    public function __construct($privyUserIdentity = null)
     {
         if (is_object($privyUserIdentity)) {
             $this->nama = $privyUserIdentity->nama;
