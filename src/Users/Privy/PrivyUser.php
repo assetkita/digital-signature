@@ -9,6 +9,31 @@ class PrivyUser extends User
     /**
      * @var string
      */
+    const STATUS_VERIFIED = 'verified';
+
+    /**
+     * @var string
+     */
+    const STATUS_WAITING = 'waiting';
+
+    /**
+     * @var string
+     */
+    const STATUS_REGISTERED = 'registered';
+
+    /**
+     * @var string
+     */
+    const STATUS_INVALID = 'invalid';
+
+    /**
+     * @var string
+     */
+    const STATUS_REJECTED = 'rejected';
+
+    /**
+     * @var string
+     */
     protected $processedAt;
 
     /**

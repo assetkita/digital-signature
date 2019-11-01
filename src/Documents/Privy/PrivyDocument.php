@@ -10,6 +10,26 @@ class PrivyDocument extends Document
     /**
      * @var string
      */
+    const DOCUMENT_TYPE_SERIAL = 'Serial';
+
+    /**
+     * @var string
+     */
+    const DOCUMENT_TYPE_PARALLEL = 'Parallel';
+
+    /**
+     * @var string
+     */
+    const STATUS_COMPLETED = 'Completed';
+
+    /**
+     * @var string
+     */
+    const STATUS_IN_PROGRESS = 'In Progress';
+
+    /**
+     * @var string
+     */
     protected $status;
 
     /**

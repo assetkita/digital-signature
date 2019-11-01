@@ -9,6 +9,26 @@ class PrivyDocumentRecipient extends DocumentRecipient
     /**
      * @var string
      */
+    const ROLE_SIGNER = 'Signer';
+
+    /**
+     * @var string
+     */
+    const ROLE_REVIEWER = 'Reviewer';
+
+    /**
+     * @var string
+     */
+    const STATUS_COMPLETED = 'Completed';
+
+    /**
+     * @var string
+     */
+    const STATUS_IN_PROGRESS = 'In Progress';
+
+    /**
+     * @var string
+     */
     protected $enterpriseToken;
 
     /**

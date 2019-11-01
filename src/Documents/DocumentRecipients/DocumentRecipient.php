@@ -108,4 +108,44 @@ abstract class DocumentRecipient
     {
         return $this->status === static::STATUS_IN_PROGRESS;
     }
+
+    /**
+     * Get signer role
+     *
+     * @return string
+     */
+    public function getRoleSigner()
+    {
+        return static::ROLE_SIGNER;
+    }
+
+    /**
+     * Get reviewer role
+     *
+     * @return string
+     */
+    public function getRoleReviewer()
+    {
+        return static::ROLE_REVIEWER;
+    }
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    public function getStatusCompleted()
+    {
+        return static::STATUS_COMPLETED;
+    }
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    public function getStatusInProgress()
+    {
+        return static::STATUS_IN_PROGRESS;
+    }
 }
