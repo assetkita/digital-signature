@@ -36,7 +36,7 @@ class PrivyDocumentRecipient extends DocumentRecipient
      *
      * @param $privyDocumentRecipient
      */
-    public function __construct($privyDocumentRecipient)
+    public function __construct($privyDocumentRecipient = null)
     {
         if (is_object($privyDocumentRecipient)) {
             $this->id = $privyDocumentRecipient->privyId;

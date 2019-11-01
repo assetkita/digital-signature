@@ -24,7 +24,7 @@ class PrivyUserRejectHandler
      *
      * @param $privyUserRejectHandler
      */
-    public function __construct($privyUserRejectHandler)
+    public function __construct($privyUserRejectHandler = null)
     {
         if (is_object($privyUserRejectHandler)) {
             $this->category = $privyUserRejectHandler->category;

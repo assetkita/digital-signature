@@ -19,7 +19,7 @@ class PrivyDocumentDownload
      *
      * @param $privyDocumentDownload
      */
-    public function __construct($privyDocumentDownload)
+    public function __construct($privyDocumentDownload = null)
     {
         if (is_object($privyDocumentDownload)) {
             $this->url = $privyDocumentDownload->url;
