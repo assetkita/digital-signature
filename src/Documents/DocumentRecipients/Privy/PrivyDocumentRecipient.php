@@ -38,10 +38,52 @@ class PrivyDocumentRecipient extends DocumentRecipient
      */
     public function __construct($privyDocumentRecipient)
     {
-        $this->id = $privyDocumentRecipient->privyId;
-        $this->role = $privyDocumentRecipient->type;
-        $this->enterpriseToken = $privyDocumentRecipient->enterpriseToken ?? null;
-        $this->status = $privyDocumentRecipient->signatoryStatus ?? null;
+        if (is_object($privyDocumentRecipient)) {
+            $this->id = $privyDocumentRecipient->privyId;
+            $this->role = $privyDocumentRecipient->type;
+            $this->enterpriseToken = $privyDocumentRecipient->enterpriseToken ?? null;
+            $this->status = $privyDocumentRecipient->signatoryStatus ?? null;
+        }
+    }
+
+    /**
+     * Get signer role
+     *
+     * @return string
+     */
+    public function getRoleSigner()
+    {
+        return static::ROLE_SIGNER;
+    }
+
+    /**
+     * Get reviewer role
+     *
+     * @return string
+     */
+    public function getRoleReviewer()
+    {
+        return static::ROLE_REVIEWER;
+    }
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    public function getStatusCompleted()
+    {
+        return static::STATUS_COMPLETED;
+    }
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    public function getStatusInProgress()
+    {
+        return static::STATUS_IN_PROGRESS;
     }
 
     /**

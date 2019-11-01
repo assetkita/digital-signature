@@ -9,26 +9,6 @@ abstract class Document
     /**
      * @var string
      */
-    const TYPE_SERIAL = 'Serial';
-
-    /**
-     * @var string
-     */
-    const TYPE_PARALLEL = 'Parallel';
-
-    /**
-     * @var string
-     */
-    const STATUS_COMPLETED = 'Completed';
-
-    /**
-     * @var string
-     */
-    const STATUS_IN_PROGRESS = 'In Progress';
-
-    /**
-     * @var string
-     */
     protected $token;
 
     /**
@@ -40,6 +20,34 @@ abstract class Document
      * @var DocumentRecipient[]
      */
     protected $recipients;
+
+    /**
+     * Get serial type
+     *
+     * @return string
+     */
+    abstract public function getTypeSerial();
+
+    /**
+     * Get serial parallel
+     *
+     * @return string
+     */
+    abstract public function getTypeParallel();
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    abstract public function getStatusCompleted();
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    abstract public function getStatusInProgress();
 
     /**
      * Get the digital signature document's token
@@ -78,7 +86,7 @@ abstract class Document
      */
     public function isStatusCompleted()
     {
-        return $this->status === static::STATUS_COMPLETED;
+        return $this->status === $this->getStatusCompleted();
     }
 
     /**
@@ -88,46 +96,6 @@ abstract class Document
      */
     public function isStatusInProgress()
     {
-        return $this->status === static::STATUS_IN_PROGRESS;
-    }
-
-    /**
-     * Get serial type
-     *
-     * @return string
-     */
-    public function getTypeSerial()
-    {
-        return static::TYPE_SERIAL;
-    }
-
-    /**
-     * Get serial parallel
-     *
-     * @return string
-     */
-    public function getTypeParallel()
-    {
-        return static::TYPE_PARALLEL;
-    }
-
-    /**
-     * Get completed status
-     *
-     * @return string
-     */
-    public function getStatusCompleted()
-    {
-        return static::STATUS_COMPLETED;
-    }
-
-    /**
-     * Get in progress status
-     *
-     * @return string
-     */
-    public function getStatusInProgress()
-    {
-        return static::STATUS_IN_PROGRESS;
+        return $this->status === $this->getStatusInProgress();
     }
 }

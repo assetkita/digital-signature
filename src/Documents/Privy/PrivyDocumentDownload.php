@@ -21,8 +21,10 @@ class PrivyDocumentDownload
      */
     public function __construct($privyDocumentDownload)
     {
-        $this->url = $privyDocumentDownload->url;
-        $this->expiresAt = $privyDocumentDownload->expiresAt;
+        if (is_object($privyDocumentDownload)) {
+            $this->url = $privyDocumentDownload->url;
+            $this->expiresAt = $privyDocumentDownload->expiresAt;
+        }
     }
 
     /**

@@ -31,10 +31,12 @@ class PrivyUserIdentity
      */
     public function __construct($privyUserIdentity)
     {
-        $this->nama = $privyUserIdentity->nama;
-        $this->nik = $privyUserIdentity->nik;
-        $this->tanggalLahir = $privyUserIdentity->tanggalLahir;
-        $this->tempatLahir = $privyUserIdentity->tempatLahir;
+        if (is_object($privyUserIdentity)) {
+            $this->nama = $privyUserIdentity->nama;
+            $this->nik = $privyUserIdentity->nik;
+            $this->tanggalLahir = $privyUserIdentity->tanggalLahir;
+            $this->tempatLahir = $privyUserIdentity->tempatLahir;
+        }
     }
 
     /**

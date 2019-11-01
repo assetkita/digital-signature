@@ -7,31 +7,6 @@ abstract class User
     /**
      * @var string
      */
-    const STATUS_VERIFIED = 'verified';
-
-    /**
-     * @var string
-     */
-    const STATUS_WAITING = 'waiting';
-
-    /**
-     * @var string
-     */
-    const STATUS_REGISTERED = 'registered';
-
-    /**
-     * @var string
-     */
-    const STATUS_INVALID = 'invalid';
-
-    /**
-     * @var string
-     */
-    const STATUS_REJECTED = 'rejected';
-
-    /**
-     * @var string
-     */
     protected $id;
 
     /**
@@ -53,6 +28,41 @@ abstract class User
      * @var string
      */
     protected $status;
+
+    /**
+     * Get verified status
+     *
+     * @return string
+     */
+    abstract public function getStatusVerified();
+
+    /**
+     * Get waiting status
+     *
+     * @return string
+     */
+    abstract public function getStatusWaiting();
+
+    /**
+     * Get registered status
+     *
+     * @return string
+     */
+    abstract public function getStatusRegistered();
+
+    /**
+     * Get invalid status
+     *
+     * @return string
+     */
+    abstract public function getStatusInvalid();
+
+    /**
+     * Get rejected status
+     *
+     * @return string
+     */
+    abstract public function getStatusRejected();
 
     /**
      * Get the digital signature user's identification
@@ -111,7 +121,7 @@ abstract class User
      */
     public function isStatusVerified()
     {
-        return $this->status === static::STATUS_VERIFIED;
+        return $this->status === $this->getStatusVerified();
     }
 
     /**
@@ -121,7 +131,7 @@ abstract class User
      */
     public function isStatusWaiting()
     {
-        return $this->status === static::STATUS_WAITING;
+        return $this->status === $this->getStatusWaiting();
     }
 
     /**
@@ -131,7 +141,7 @@ abstract class User
      */
     public function isStatusRegistered()
     {
-        return $this->status === static::STATUS_REGISTERED;
+        return $this->status === $this->getStatusRegistered();
     }
 
     /**
@@ -141,7 +151,7 @@ abstract class User
      */
     public function isStatusInvalid()
     {
-        return $this->status === static::STATUS_INVALID;
+        return $this->status === $this->getStatusInvalid();
     }
 
     /**
@@ -151,56 +161,6 @@ abstract class User
      */
     public function isStatusRejected()
     {
-        return $this->status === static::STATUS_REJECTED;
-    }
-
-    /**
-     * Get verified status
-     *
-     * @return string
-     */
-    public function getStatusVerified()
-    {
-        return static::STATUS_VERIFIED;
-    }
-
-    /**
-     * Get waiting status
-     *
-     * @return string
-     */
-    public function getStatusWaiting()
-    {
-        return static::STATUS_WAITING;
-    }
-
-    /**
-     * Get registered status
-     *
-     * @return string
-     */
-    public function getStatusRegistered()
-    {
-        return static::STATUS_REGISTERED;
-    }
-
-    /**
-     * Get invalid status
-     *
-     * @return string
-     */
-    public function getStatusInvalid()
-    {
-        return static::STATUS_INVALID;
-    }
-
-    /**
-     * Get rejected status
-     *
-     * @return string
-     */
-    public function getStatusRejected()
-    {
-        return static::STATUS_REJECTED;
+        return $this->status === $this->getStatusRejected();
     }
 }

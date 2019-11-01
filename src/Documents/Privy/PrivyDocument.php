@@ -10,12 +10,12 @@ class PrivyDocument extends Document
     /**
      * @var string
      */
-    const DOCUMENT_TYPE_SERIAL = 'Serial';
+    const TYPE_SERIAL = 'Serial';
 
     /**
      * @var string
      */
-    const DOCUMENT_TYPE_PARALLEL = 'Parallel';
+    const TYPE_PARALLEL = 'Parallel';
 
     /**
      * @var string
@@ -44,18 +44,60 @@ class PrivyDocument extends Document
      */
     public function __construct($privyDocument)
     {
-        $this->token = $privyDocument->docToken;
-        $this->url = $privyDocument->urlDocument;
+        if (is_object($privyDocument)) {
+            $this->token = $privyDocument->docToken;
+            $this->url = $privyDocument->urlDocument;
 
-        $this->status = $privyDocument->documentStatus ?? null;
+            $this->status = $privyDocument->documentStatus ?? null;
 
-        $this->recipients = array_map(function ($recipient) {
-            return new PrivyDocumentRecipient($recipient);
-        }, $privyDocument->recipients);
+            $this->recipients = array_map(function ($recipient) {
+                return new PrivyDocumentRecipient($recipient);
+            }, $privyDocument->recipients);
 
-        if (isset($privyDocument->download)) {
-            $this->download = new PrivyDocumentDownload($privyDocument->download);
+            if (isset($privyDocument->download)) {
+                $this->download = new PrivyDocumentDownload($privyDocument->download);
+            }
         }
+    }
+
+    /**
+     * Get serial type
+     *
+     * @return string
+     */
+    public function getTypeSerial()
+    {
+        return static::TYPE_SERIAL;
+    }
+
+    /**
+     * Get serial parallel
+     *
+     * @return string
+     */
+    public function getTypeParallel()
+    {
+        return static::TYPE_PARALLEL;
+    }
+
+    /**
+     * Get completed status
+     *
+     * @return string
+     */
+    public function getStatusCompleted()
+    {
+        return static::STATUS_COMPLETED;
+    }
+
+    /**
+     * Get in progress status
+     *
+     * @return string
+     */
+    public function getStatusInProgress()
+    {
+        return static::STATUS_IN_PROGRESS;
     }
 
     /**

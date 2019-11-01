@@ -53,21 +53,73 @@ class PrivyUser extends User
      */
     public function __construct($privyUser)
     {
-        $this->email = $privyUser->email;
-        $this->phone = $privyUser->phone;
-        $this->token = $privyUser->userToken;
-        $this->status = $privyUser->status;
+        if (is_object($privyUser)) {
+            $this->email = $privyUser->email;
+            $this->phone = $privyUser->phone;
+            $this->token = $privyUser->userToken;
+            $this->status = $privyUser->status;
 
-        $this->id = $privyUser->privyId ?? null;
-        $this->processedAt = $privyUser->processedAt ?? null;
+            $this->id = $privyUser->privyId ?? null;
+            $this->processedAt = $privyUser->processedAt ?? null;
 
-        if (isset($privyUser->identity)) {
-            $this->identity = new PrivyUserIdentity($privyUser->identity);
+            if (isset($privyUser->identity)) {
+                $this->identity = new PrivyUserIdentity($privyUser->identity);
+            }
+
+            if (isset($privyUser->reject)) {
+                $this->reject = new PrivyUserReject($privyUser->reject);
+            }
         }
+    }
 
-        if (isset($privyUser->reject)) {
-            $this->reject = new PrivyUserReject($privyUser->reject);
-        }
+    /**
+     * Get verified status
+     *
+     * @return string
+     */
+    public function getStatusVerified()
+    {
+        return static::STATUS_VERIFIED;
+    }
+
+    /**
+     * Get waiting status
+     *
+     * @return string
+     */
+    public function getStatusWaiting()
+    {
+        return static::STATUS_WAITING;
+    }
+
+    /**
+     * Get registered status
+     *
+     * @return string
+     */
+    public function getStatusRegistered()
+    {
+        return static::STATUS_REGISTERED;
+    }
+
+    /**
+     * Get invalid status
+     *
+     * @return string
+     */
+    public function getStatusInvalid()
+    {
+        return static::STATUS_INVALID;
+    }
+
+    /**
+     * Get rejected status
+     *
+     * @return string
+     */
+    public function getStatusRejected()
+    {
+        return static::STATUS_REJECTED;
     }
 
     /**
