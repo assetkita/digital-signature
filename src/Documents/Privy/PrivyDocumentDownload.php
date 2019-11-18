@@ -12,7 +12,7 @@ class PrivyDocumentDownload
     /**
      * @var string
      */
-    protected $expiresAt;
+    protected $expiredAt;
 
     /**
      * PrivyDocumentDownload constructor.
@@ -23,7 +23,7 @@ class PrivyDocumentDownload
     {
         if (is_object($privyDocumentDownload)) {
             $this->url = $privyDocumentDownload->url;
-            $this->expiresAt = $privyDocumentDownload->expiresAt;
+            $this->expiredAt = $privyDocumentDownload->expiredAt;
         }
     }
 
@@ -38,12 +38,12 @@ class PrivyDocumentDownload
     }
 
     /**
-     * Get the digital signature document's download expires at
+     * Get the digital signature document's download expired at
      *
      * @return string
      */
-    public function getExpiresAt()
+    public function getExpiredAt()
     {
-        return $this->expiresAt;
+        return $this->expiredAt;
     }
 }
