@@ -60,6 +60,6 @@ class DigitalSignatureCheckRegistrationStatusException extends HasErrorsExceptio
      */
     public static function unknown()
     {
-        return new static('Unknown check registration status error', 600);
+        return new static('Unknown check registration status error', 501);
     }
 }

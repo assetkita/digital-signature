@@ -49,6 +49,6 @@ class DigitalSignatureUploadDocumentException extends HasErrorsException
      */
     public static function unknown()
     {
-        return new static('Unknown registration error', 600);
+        return new static('Unknown registration error', 501);
     }
 }
