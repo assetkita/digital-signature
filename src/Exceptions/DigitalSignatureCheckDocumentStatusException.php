@@ -44,6 +44,6 @@ class DigitalSignatureCheckDocumentStatusException extends HasErrorsException
      */
     public static function unknown()
     {
-        return new static('Unknown check document status error', 600);
+        return new static('Unknown check document status error', 501);
     }
 }
