@@ -23,7 +23,7 @@ class DigitalSignatureCheckDocumentStatusException extends HasErrorsException
      */
     public static function internalServerError(string $message)
     {
-        return new static($message, 500);
+        return new static($message . ' from ' . config('digital-signature.default'), 500);
     }
 
     /**
@@ -34,7 +34,7 @@ class DigitalSignatureCheckDocumentStatusException extends HasErrorsException
      */
     public static function serviceUnavailable(string $message)
     {
-        return new static($message, 503);
+        return new static($message . ' from ' . config('digital-signature.default'), 503);
     }
 
     /**
@@ -44,6 +44,6 @@ class DigitalSignatureCheckDocumentStatusException extends HasErrorsException
      */
     public static function unknown()
     {
-        return new static('Unknown check document status error', 501);
+        return new static('Unknown check document status error from ' . config('digital-signature.default'), 500);
     }
 }

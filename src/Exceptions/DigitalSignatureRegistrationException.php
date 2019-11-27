@@ -28,7 +28,7 @@ class DigitalSignatureRegistrationException extends HasErrorsException
      */
     public static function internalServerError(string $message)
     {
-        return new static($message, 500);
+        return new static($message . ' from ' . config('digital-signature.default'), 500);
     }
 
     /**
@@ -39,7 +39,7 @@ class DigitalSignatureRegistrationException extends HasErrorsException
      */
     public static function serviceUnavailable(string $message)
     {
-        return new static($message, 503);
+        return new static($message . ' from ' . config('digital-signature.default'), 503);
     }
 
     /**
@@ -49,6 +49,6 @@ class DigitalSignatureRegistrationException extends HasErrorsException
      */
     public static function unknown()
     {
-        return new static('Unknown registration error', 501);
+        return new static('Unknown registration error from ' . config('digital-signature.default'), 500);
     }
 }

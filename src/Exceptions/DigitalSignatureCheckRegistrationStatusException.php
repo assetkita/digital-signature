@@ -39,7 +39,7 @@ class DigitalSignatureCheckRegistrationStatusException extends HasErrorsExceptio
      */
     public static function internalServerError(string $message)
     {
-        return new static($message, 500);
+        return new static($message . ' from ' . config('digital-signature.default'), 500);
     }
 
     /**
@@ -50,7 +50,7 @@ class DigitalSignatureCheckRegistrationStatusException extends HasErrorsExceptio
      */
     public static function serviceUnavailable(string $message)
     {
-        return new static($message, 503);
+        return new static($message . ' from ' . config('digital-signature.default'), 503);
     }
 
     /**
@@ -60,6 +60,6 @@ class DigitalSignatureCheckRegistrationStatusException extends HasErrorsExceptio
      */
     public static function unknown()
     {
-        return new static('Unknown check registration status error', 501);
+        return new static('Unknown check registration status error from ' . config('digital-signature.default'), 500);
     }
 }
