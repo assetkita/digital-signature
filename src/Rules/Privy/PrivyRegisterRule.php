@@ -7,38 +7,34 @@ use Assetku\DigitalSignature\Rules\Rule;
 class PrivyRegisterRule extends Rule
 {
     /**
-     * Get rules for validation
-     *
-     * @return array
+     * @inheritDoc
      */
     public function rules()
     {
         return [
-            'email'                  => 'required|email',
-            'phone'                  => 'required|string',
+            'email'                  => 'required|email|min:6',
+            'phone'                  => 'required|string|min:10',
             'selfie'                 => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'ktp'                    => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'identity'               => 'required|array',
             'identity.nik'           => [
                 'required',
-                'numeric',
+                'string',
                 'digits:16',
-                'regex:/[1-9]$/'
+                'regex:/[1-9]$/',
             ],
             'identity.name'          => 'required|string|min:3',
-            'identity.tanggal_lahir' => 'required|date'
+            'identity.tanggal_lahir' => 'required|date',
         ];
     }
 
     /**
-     * Get messages for validation
-     *
-     * @return array
+     * @inheritDoc
      */
     public function messages()
     {
         return [
-            'identity.nik.regex' => "Digit terakhir :attribute tidak boleh berupa 0"
+            'identity.nik.regex' => "Karakter terakhir :attribute tidak boleh berupa 0",
         ];
     }
 }

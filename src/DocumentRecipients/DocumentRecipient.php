@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetku\DigitalSignature\Documents\DocumentRecipients;
+namespace Assetku\DigitalSignature\DocumentRecipients;
 
 abstract class DocumentRecipient
 {

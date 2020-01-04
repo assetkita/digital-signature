@@ -2,10 +2,8 @@
 
 namespace Assetku\DigitalSignature\Providers;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignature as DigitalSignatureContract;
 use Assetku\DigitalSignature\DigitalSignature;
-use Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException;
-use Assetku\DigitalSignature\Services\Privy;
+use Assetku\DigitalSignature\Driver;
 use Illuminate\Support\ServiceProvider;
 
 class DigitalSignatureServiceProvider extends ServiceProvider
@@ -14,28 +12,19 @@ class DigitalSignatureServiceProvider extends ServiceProvider
      * Register any application services.
      *
      * @return void
-     * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException
      */
     public function register()
     {
         // merge package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/digital-signature.php', 'digital-signature');
+        $this->mergeConfigFrom(__DIR__.'/../config/digital-signature.php', 'digital-signature');
 
-        // set digital signature
-        switch (config('digital-signature.default')) {
-            case 'privy':
-                $digitalSignature = Privy::class;
-                break;
-            default:
-                throw DigitalSignatureDriverException::unknownDriver();
-                break;
-        }
+        // register a driver binding with the container.
+        $this->app->bind('assetkita.digital_signature_driver', function () {
+            return new Driver(config('digital-signature.default'));
+        });
 
-        // bind digital signature contract with digital signature concrete
-        $this->app->bind(DigitalSignatureContract::class, $digitalSignature);
-
-        // bind digital signature facade with digital signature instance
-        $this->app->bind('assetkita.digital_signature', function () {
+        // Register a facade shared binding in the container.
+        $this->app->singleton('assetkita.digital_signature', function () {
             return new DigitalSignature;
         });
     }
@@ -49,12 +38,12 @@ class DigitalSignatureServiceProvider extends ServiceProvider
     {
         // publish package configuration
         $this->publishes([
-            __DIR__ . '/../config/digital-signature.php' => config_path('digital-signature.php')
+            __DIR__.'/../config/digital-signature.php' => config_path('digital-signature.php')
         ], 'config');
 
         // publish package views
         $this->publishes([
-            __DIR__ . '/../views' => resource_path('views/vendor/digital-signature')
+            __DIR__.'/../views' => resource_path('views/vendor/digital-signature')
         ], 'views');
     }
 }

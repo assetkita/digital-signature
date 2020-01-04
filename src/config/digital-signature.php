@@ -28,22 +28,21 @@ return [
     'services' => [
 
         'privy' => [
-            'merchant_key'     => env('PRIVY_MERCHANT_KEY'),
-            'username'         => env('PRIVY_USERNAME'),
-            'password'         => env('PRIVY_PASSWORD'),
-            'endpoint'         => [
-                'development' => env('PRIVY_ENDPOINT_DEVELOPMENT'),
-                'production'  => env('PRIVY_ENDPOINT_PRODUCTION')
+            'merchant_key' => env('PRIVY_MERCHANT_KEY'),
+            'username'     => env('PRIVY_USERNAME'),
+            'password'     => env('PRIVY_PASSWORD'),
+            'development'  => [
+                'endpoint'         => env('PRIVY_DEVELOPMENT_ENDPOINT'),
+                'enterprise_token' => env('PRIVY_DEVELOPMENT_ENTERPRISE_TOKEN'),
+                'web_sdk_endpoint' => env('PRIVY_DEVELOPMENT_WEB_SDK_ENDPOINT'),
             ],
-            'enterprise_token' => [
-                'development' => env('PRIVY_ENTERPRISE_TOKEN_DEVELOPMENT'),
-                'production'  => env('PRIVY_ENTERPRISE_TOKEN_PRODUCTION')
+            'production'   => [
+                'endpoint'         => env('PRIVY_PRODUCTION_ENDPOINT'),
+                'enterprise_token' => env('PRIVY_PRODUCTION_ENTERPRISE_TOKEN'),
+                'web_sdk_endpoint' => env('PRIVY_PRODUCTION_WEB_SDK_ENDPOINT'),
             ],
-            'web_sdk_endpoint' => [
-                'development' => env('PRIVY_WEB_SDK_ENDPOINT_DEVELOPMENT'),
-                'production'  => env('PRIVY_WEB_SDK_ENDPOINT_PRODUCTION')
-            ]
-        ]
+        ],
 
-    ]
+    ],
+
 ];

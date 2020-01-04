@@ -1,15 +1,17 @@
 <?php
 
-namespace Assetku\DigitalSignature;
+namespace Assetku\DigitalSignature\Services;
 
+use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use Illuminate\Http\UploadedFile;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class HTTPClient
+class API
 {
     /**
      * @var string
@@ -32,7 +34,7 @@ class HTTPClient
     protected $request;
 
     /**
-     * HTTPClient constructor.
+     * API constructor.
      *
      * @param  array  $config
      */
@@ -40,7 +42,7 @@ class HTTPClient
     {
         $stack = new HandlerStack;
         $stack->setHandler(new CurlHandler);
-        $stack->push($this->addHeaders($config['headers']));
+        $stack->push($this->setupHeaders($config['headers']));
 
         $config['handler'] = $stack;
 
@@ -82,7 +84,7 @@ class HTTPClient
      *
      * @param  string  $uri
      * @param  array  $params
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return mixed|ResponseInterface
      * @throws GuzzleException
      */
     public function get(string $uri, array $params = [])
@@ -102,7 +104,7 @@ class HTTPClient
      * @param  string  $uri
      * @param  array  $data
      * @param  string  $option
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return mixed|ResponseInterface
      * @throws GuzzleException
      */
     public function post(string $uri, array $data, $option = self::POST_FORM_PARAMS)
@@ -172,12 +174,12 @@ class HTTPClient
     }
 
     /**
-     * Add headers to the request
+     * Setup request headers
      *
      * @param  array  $headers
-     * @return \Closure
+     * @return Closure
      */
-    protected function addHeaders(array $headers)
+    protected function setupHeaders(array $headers)
     {
         return function (callable $handler) use ($headers) {
             return function (RequestInterface $request, array $options) use ($handler, $headers) {

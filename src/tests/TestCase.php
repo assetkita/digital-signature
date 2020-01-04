@@ -2,9 +2,8 @@
 
 namespace Assetku\DigitalSignature\tests;
 
-use Assetku\DigitalSignature\Facades\DigitalSignature;
-use Assetku\DigitalSignature\Providers\DigitalSignatureServiceProvider;
 use Faker\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
@@ -32,38 +31,38 @@ abstract class TestCase extends OrchestraTestCase
     /**
      * Load package service provider
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
     {
         return [
-            DigitalSignatureServiceProvider::class
+            \Assetku\DigitalSignature\Providers\DigitalSignatureServiceProvider::class
         ];
     }
 
     /**
      * Load package alias
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return array
      */
     protected function getPackageAliases($app)
     {
         return [
-            'DigitalSignature' => DigitalSignature::class
+            'DigitalSignature' => \Assetku\DigitalSignature\Facades\DigitalSignature::class
         ];
     }
 
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app->useEnvironmentPath(__DIR__ . '/../..')
+        $app->useEnvironmentPath(__DIR__.'/../..')
             ->loadEnvironmentFrom('.env.testing')
             ->bootstrapWith([
                 LoadEnvironmentVariables::class
@@ -72,17 +71,17 @@ abstract class TestCase extends OrchestraTestCase
         $app['config']->set('digital-signature.default', env('DIGITAL_SIGNATURE_DRIVER'));
 
         $app['config']->set('digital-signature.services.privy', [
-            'merchant_key'     => env('PRIVY_MERCHANT_KEY'),
-            'username'         => env('PRIVY_USERNAME'),
-            'password'         => env('PRIVY_PASSWORD'),
-            'endpoint'         => [
-                'development' => env('PRIVY_ENDPOINT_DEVELOPMENT'),
-                'production'  => env('PRIVY_ENDPOINT_PRODUCTION')
+            'merchant_key' => env('PRIVY_MERCHANT_KEY'),
+            'username'     => env('PRIVY_USERNAME'),
+            'password'     => env('PRIVY_PASSWORD'),
+            'development'  => [
+                'endpoint'         => env('PRIVY_DEVELOPMENT_ENDPOINT'),
+                'enterprise_token' => env('PRIVY_DEVELOPMENT_ENTERPRISE_TOKEN'),
             ],
-            'enterprise_token' => [
-                'development' => env('PRIVY_ENTERPRISE_TOKEN_DEVELOPMENT'),
-                'production'  => env('PRIVY_ENTERPRISE_TOKEN_PRODUCTION')
-            ]
+            'production'   => [
+                'endpoint'         => env('PRIVY_PRODUCTION_ENDPOINT'),
+                'enterprise_token' => env('PRIVY_PRODUCTION_ENTERPRISE_TOKEN'),
+            ],
         ]);
     }
 }

@@ -2,7 +2,10 @@
 
 namespace Assetku\DigitalSignature\Services;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignature;
+use Assetku\DigitalSignature\Builders\Privy\PrivyRegistrationBuilder;
+use Assetku\DigitalSignature\Builders\Privy\PrivyUploadDocumentBuilder;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
 use Assetku\DigitalSignature\Documents\Document;
 use Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
@@ -10,17 +13,12 @@ use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusE
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use Assetku\DigitalSignature\HTTPClient;
-use Assetku\DigitalSignature\Rules\Privy\PrivyCheckDocumentStatusRule;
-use Assetku\DigitalSignature\Rules\Privy\PrivyCheckRegistrationStatusRule;
-use Assetku\DigitalSignature\Rules\Privy\PrivyRegisterRule;
-use Assetku\DigitalSignature\Rules\Privy\PrivyUploadDocumentRule;
 use Assetku\DigitalSignature\Users\Privy\PrivyUser;
 use Assetku\DigitalSignature\Users\User;
-use Assetku\DigitalSignature\Validator;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Http\Response;
 
-class Privy implements DigitalSignature
+class PrivyService implements Service
 {
     /**
      * @var string
@@ -53,17 +51,12 @@ class Privy implements DigitalSignature
     private $webSDKEndpoint;
 
     /**
-     * @var HTTPClient
+     * @var API
      */
-    protected $httpClient;
+    protected $api;
 
     /**
-     * @var Validator
-     */
-    protected $validator;
-
-    /**
-     * Privy constructor.
+     * PrivyService constructor.
      */
     public function __construct()
     {
@@ -71,66 +64,58 @@ class Privy implements DigitalSignature
         $this->username = config('digital-signature.services.privy.username');
         $this->password = config('digital-signature.services.privy.password');
 
-        if (\App::environment('production')) {
-            $this->endpoint = config('digital-signature.services.privy.endpoint.production');
-            $this->enterpriseToken = config('digital-signature.services.privy.enterprise_token.production');
-            $this->webSDKEndpoint = config('digital-signature.services.privy.web_sdk_endpoint.production');
-        } else {
-            $this->endpoint = config('digital-signature.services.privy.endpoint.development');
-            $this->enterpriseToken = config('digital-signature.services.privy.enterprise_token.development');
-            $this->webSDKEndpoint = config('digital-signature.services.privy.web_sdk_endpoint.development');
-        }
+        $environment = \App::environment('production') ? 'production' : 'development';
 
-        $this->initHttpClient();
+        $this->endpoint = config("digital-signature.services.privy.{$environment}.endpoint");
+        $this->enterpriseToken = config("digital-signature.services.privy.{$environment}.enterprise_token");
+        $this->webSDKEndpoint = config("digital-signature.services.privy.{$environment}.web_sdk_endpoint");
 
-        $this->validator = new Validator;
+        $this->initAPI();
     }
 
     /**
      * Register a user to digital signature provider
      *
-     * @param  array  $data
+     * @param  DigitalSignatureUser  $user
      * @return User
      * @throws DigitalSignatureRegistrationException
      * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
-    public function register(array $data)
+    public function register(DigitalSignatureUser $user)
     {
-        // privy only accept pattern 08123... or +628123... not (+62)8123... or 628123... so we need to formats it first
-        $data = $this->formatPrivyPhone($data);
-
         try {
-            $this->validator->validate($data, new PrivyRegisterRule);
+            $registration = new PrivyRegistrationBuilder($user);
         } catch (DigitalSignatureValidatorException $e) {
             throw $e;
         }
 
         try {
-            $response = $this->httpClient->post('registration', $data, HTTPClient::POST_MULTIPART);
+            $response = $this->api->post('registration', $registration->serialize(), API::POST_MULTIPART);
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success
-            if ($response->getStatusCode() === 201) {
+            // handle 201 response code
+            if ($response->getStatusCode() === Response::HTTP_CREATED) {
                 return new PrivyUser($contents->data);
             }
 
-            // on failed
-            if ($response->getStatusCode() === 422) {
+            // handle 422 response code
+            if ($response->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY) {
                 throw DigitalSignatureRegistrationException::failed($contents->message, $contents->errors);
             }
 
-            // on internal server error
-            if ($response->getStatusCode() === 500) {
+            // handle 500 response code
+            if ($response->getStatusCode() === Response::HTTP_INTERNAL_SERVER_ERROR) {
                 throw DigitalSignatureRegistrationException::internalServerError($contents->message);
             }
 
-            // on service unavailable
-            if ($response->getStatusCode() === 503) {
+            // handle 503 response code
+            if ($response->getStatusCode() === Response::HTTP_SERVICE_UNAVAILABLE) {
                 throw DigitalSignatureRegistrationException::serviceUnavailable($contents->message);
             }
 
+            // handle unknown response code
             throw DigitalSignatureRegistrationException::unknown();
         } catch (GuzzleException $e) {
             throw $e;
@@ -143,52 +128,42 @@ class Privy implements DigitalSignature
      * @param  string  $token
      * @return User
      * @throws DigitalSignatureCheckRegistrationStatusException
-     * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
     public function checkRegistrationStatus(string $token)
     {
-        $data = [
-            'token' => $token
-        ];
-
         try {
-            $this->validator->validate($data, new PrivyCheckRegistrationStatusRule);
-        } catch (DigitalSignatureValidatorException $e) {
-            throw $e;
-        }
-
-        try {
-            $response = $this->httpClient->post('registration/status', $data);
+            $response = $this->api->post('registration/status', ['token' => $token,]);
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success
-            if ($response->getStatusCode() === 201) {
+            // handle 201 response code
+            if ($response->getStatusCode() === Response::HTTP_CREATED) {
                 return new PrivyUser($contents->data);
             }
 
-            // on failed
-            if ($response->getStatusCode() === 422) {
+            // handle 422 response code
+            if ($response->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY) {
                 throw DigitalSignatureCheckRegistrationStatusException::failed($contents->message,
                     $contents->errors);
             }
 
-            // on not found
-            if ($response->getStatusCode() === 404) {
+            // handle 404 response code
+            if ($response->getStatusCode() === Response::HTTP_NOT_FOUND) {
                 throw DigitalSignatureCheckRegistrationStatusException::notFound($contents->message);
             }
 
-            // on internal server error
-            if ($response->getStatusCode() === 500) {
+            // handle 500 response code
+            if ($response->getStatusCode() === Response::HTTP_INTERNAL_SERVER_ERROR) {
                 throw DigitalSignatureCheckRegistrationStatusException::internalServerError($contents->message);
             }
 
-            // on service unavailable
-            if ($response->getStatusCode() === 503) {
+            // handle 503 response code
+            if ($response->getStatusCode() === Response::HTTP_SERVICE_UNAVAILABLE) {
                 throw DigitalSignatureCheckRegistrationStatusException::serviceUnavailable($contents->message);
             }
 
+            // handle unknown response code
             throw DigitalSignatureCheckRegistrationStatusException::unknown();
         } catch (GuzzleException $e) {
             throw $e;
@@ -198,45 +173,46 @@ class Privy implements DigitalSignature
     /**
      * Upload a document to digital signature provider
      *
-     * @param  array  $data
+     * @param  DigitalSignatureDocument  $document
      * @return Document
      * @throws DigitalSignatureUploadDocumentException
      * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
-    public function uploadDocument(array $data)
+    public function uploadDocument(DigitalSignatureDocument $document)
     {
         try {
-            $this->validator->validate($data, new PrivyUploadDocumentRule);
+            $uploadDocument = new PrivyUploadDocumentBuilder($document);
         } catch (DigitalSignatureValidatorException $e) {
             throw $e;
         }
 
         try {
-            $response = $this->httpClient->post('document/upload', $data, HTTPClient::POST_MULTIPART);
+            $response = $this->api->post('document/upload', $uploadDocument->serialize(), API::POST_MULTIPART);
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success
-            if ($response->getStatusCode() === 201) {
+            // handle 201 response code
+            if ($response->getStatusCode() === Response::HTTP_CREATED) {
                 return new PrivyDocument($contents->data);
             }
 
-            // on failed
-            if ($response->getStatusCode() === 422) {
+            // handle 422 response code
+            if ($response->getStatusCode() === Response::HTTP_UNPROCESSABLE_ENTITY) {
                 throw DigitalSignatureUploadDocumentException::failed($contents->message, $contents->errors);
             }
 
-            // on internal server error
-            if ($response->getStatusCode() === 500) {
+            // handle 500 response code
+            if ($response->getStatusCode() === Response::HTTP_INTERNAL_SERVER_ERROR) {
                 throw DigitalSignatureUploadDocumentException::internalServerError($contents->message);
             }
 
-            // on service unavailable
-            if ($response->getStatusCode() === 503) {
+            // handle 503 response code
+            if ($response->getStatusCode() === Response::HTTP_SERVICE_UNAVAILABLE) {
                 throw DigitalSignatureUploadDocumentException::serviceUnavailable($contents->message);
             }
 
+            // handle unknown response code
             throw DigitalSignatureUploadDocumentException::unknown();
         } catch (GuzzleException $e) {
             throw $e;
@@ -249,46 +225,36 @@ class Privy implements DigitalSignature
      * @param  string  $token
      * @return Document
      * @throws DigitalSignatureCheckDocumentStatusException
-     * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
     public function checkDocumentStatus(string $token)
     {
-        $data = [
-            'docToken' => $token
-        ];
-
         try {
-            $this->validator->validate($data, new PrivyCheckDocumentStatusRule);
-        } catch (DigitalSignatureValidatorException $e) {
-            throw $e;
-        }
-
-        try {
-            $response = $this->httpClient->get("document/status/{$token}");
+            $response = $this->api->get("document/status/{$token}", ['docToken' => $token,]);
 
             $contents = json_decode($response->getBody()->getContents());
 
-            // on success
-            if ($response->getStatusCode() === 200) {
+            // handle 200 response code
+            if ($response->getStatusCode() === Response::HTTP_OK) {
                 return new PrivyDocument($contents->data);
             }
 
-            // on not found
-            if ($response->getStatusCode() === 404) {
+            // handle 404 response code
+            if ($response->getStatusCode() === Response::HTTP_NOT_FOUND) {
                 throw DigitalSignatureCheckDocumentStatusException::notFound($contents->message);
             }
 
-            // on internal server error
-            if ($response->getStatusCode() === 500) {
+            // handle 500 response code
+            if ($response->getStatusCode() === Response::HTTP_INTERNAL_SERVER_ERROR) {
                 throw DigitalSignatureCheckDocumentStatusException::internalServerError($contents->message);
             }
 
-            // on service unavailable
-            if ($response->getStatusCode() === 503) {
+            // handle 503 response code
+            if ($response->getStatusCode() === Response::HTTP_SERVICE_UNAVAILABLE) {
                 throw DigitalSignatureCheckDocumentStatusException::serviceUnavailable($contents->message);
             }
 
+            // handle unknown response code
             throw DigitalSignatureCheckDocumentStatusException::unknown();
         } catch (GuzzleException $e) {
             throw $e;
@@ -316,44 +282,22 @@ class Privy implements DigitalSignature
     }
 
     /**
-     * Initialize the HTTPClient instance
+     * Initialize the API instance
      *
+     * @return void
      */
-    protected function initHttpClient()
+    protected function initAPI()
     {
-        $this->httpClient = new HTTPClient([
+        $this->api = new API([
             'base_uri' => $this->endpoint,
             'headers'  => [
                 'Merchant-Key' => $this->merchantKey,
-                'Accept'       => 'application/json'
+                'Accept'       => 'application/json',
             ],
             'auth'     => [
                 $this->username,
-                $this->password
-            ]
+                $this->password,
+            ],
         ]);
-    }
-
-    /**
-     * Format the phone number to be allowed to registered to privy phone number
-     *
-     * @param  array  $data
-     * @return array
-     */
-    protected function formatPrivyPhone(array $data)
-    {
-        $patterns = [
-            '/^\(\+62\)/',
-            '/^62/'
-        ];
-
-        foreach ($patterns as $pattern) {
-            $data['phone'] = preg_replace($pattern, '+62', $data['phone']);
-        }
-
-        // strip whitespace everywhere
-        $data['phone'] = str_replace(' ', '', $data['phone']);
-
-        return $data;
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Assetku\DigitalSignature\Documents\DocumentRecipients\Privy;
+namespace Assetku\DigitalSignature\DocumentRecipients\Privy;
 
-use Assetku\DigitalSignature\Documents\DocumentRecipients\DocumentRecipient;
+use Assetku\DigitalSignature\DocumentRecipients\DocumentRecipient;
 
 class PrivyDocumentRecipient extends DocumentRecipient
 {

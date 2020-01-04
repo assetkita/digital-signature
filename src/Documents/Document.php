@@ -2,7 +2,7 @@
 
 namespace Assetku\DigitalSignature\Documents;
 
-use Assetku\DigitalSignature\Documents\DocumentRecipients\DocumentRecipient;
+use Assetku\DigitalSignature\DocumentRecipients\DocumentRecipient;
 
 abstract class Document
 {
