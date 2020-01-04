@@ -2,27 +2,30 @@
 
 namespace Assetku\DigitalSignature;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignature as DigitalSignatureContract;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\DocumentRecipients\DocumentRecipient;
 use Assetku\DigitalSignature\Documents\Document;
-use Assetku\DigitalSignature\Documents\DocumentRecipients\DocumentRecipient;
-use Assetku\DigitalSignature\Documents\DocumentRecipients\Privy\PrivyDocumentRecipient;
-use Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusException;
-use Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use Assetku\DigitalSignature\Users\Privy\PrivyUser;
+use Assetku\DigitalSignature\Services\Service;
 use Assetku\DigitalSignature\Users\User;
 use GuzzleHttp\Exception\GuzzleException;
 
 class DigitalSignature
 {
     /**
-     * @var DigitalSignature
+     * @var Driver
      */
-    protected $digitalSignature;
+    protected $driver;
+
+    /**
+     * @var Service
+     */
+    protected $service;
 
     /**
      * @var User
@@ -42,36 +45,30 @@ class DigitalSignature
     /**
      * DigitalSignature constructor.
      *
-     * @throws DigitalSignatureDriverException
      */
     public function __construct()
     {
-        $this->digitalSignature = resolve(DigitalSignatureContract::class);
+        $this->driver = \App::make('assetkita.digital_signature_driver');
 
-        try {
-            $this->setUser();
-            $this->setDocument();
-            $this->setDocumentRecipient();
-        } catch (DigitalSignatureDriverException $e) {
-            throw $e;
-        }
+        $this->service = $this->driver->service();
+        $this->user = $this->driver->user();
+        $this->document = $this->driver->document();
+        $this->documentRecipient = $this->driver->documentRecipient();
     }
 
     /**
      * Register the user to digital signature provider
      *
-     * @param  array  $data
+     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureUser  $user
      * @return \Assetku\DigitalSignature\Users\User
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function register(array $data)
+    public function register(DigitalSignatureUser $user)
     {
         try {
-            $user = $this->digitalSignature->register($data);
-
-            return $user;
+            return $this->service->register($user);
         } catch (DigitalSignatureRegistrationException $e) {
             throw $e;
         } catch (DigitalSignatureValidatorException $e) {
@@ -93,9 +90,7 @@ class DigitalSignature
     public function checkRegistrationStatus(string $token)
     {
         try {
-            $user = $this->digitalSignature->checkRegistrationStatus($token);
-
-            return $user;
+            return $this->service->checkRegistrationStatus($token);
         } catch (DigitalSignatureCheckRegistrationStatusException $e) {
             throw $e;
         } catch (DigitalSignatureValidatorException $e) {
@@ -108,18 +103,16 @@ class DigitalSignature
     /**
      * Upload a document to digital signature provider
      *
-     * @param  array  $data
+     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureDocument  $document
      * @return \Assetku\DigitalSignature\Documents\Document
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function uploadDocument(array $data)
+    public function uploadDocument(DigitalSignatureDocument $document)
     {
         try {
-            $document = $this->digitalSignature->uploadDocument($data);
-
-            return $document;
+            return $this->service->uploadDocument($document);
         } catch (DigitalSignatureUploadDocumentException $e) {
             throw $e;
         } catch (DigitalSignatureValidatorException $e) {
@@ -141,9 +134,7 @@ class DigitalSignature
     public function checkDocumentStatus(string $token)
     {
         try {
-            $document = $this->digitalSignature->checkDocumentStatus($token);
-
-            return $document;
+            return $this->service->checkDocumentStatus($token);
         } catch (DigitalSignatureCheckDocumentStatusException $e) {
             throw $e;
         } catch (DigitalSignatureValidatorException $e) {
@@ -160,7 +151,7 @@ class DigitalSignature
      */
     public function getEnterpriseToken()
     {
-        return $this->digitalSignature->getEnterpriseToken();
+        return $this->service->getEnterpriseToken();
     }
 
     /**
@@ -170,24 +161,7 @@ class DigitalSignature
      */
     public function getWebSDKEndpoint()
     {
-        return $this->digitalSignature->getWebSDKEndpoint();
-    }
-
-    /**
-     * Set digital signature user
-     *
-     * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureDriverException
-     */
-    public function setUser()
-    {
-        switch (config('digital-signature.default')) {
-            case 'privy':
-                $this->user = new PrivyUser;
-                break;
-            default:
-                throw DigitalSignatureDriverException::unknownDriver();
-                break;
-        }
+        return $this->service->getWebSDKEndpoint();
     }
 
     /**
@@ -201,23 +175,6 @@ class DigitalSignature
     }
 
     /**
-     * Set digital signature document
-     *
-     * @throws DigitalSignatureDriverException
-     */
-    public function setDocument()
-    {
-        switch (config('digital-signature.default')) {
-            case 'privy':
-                $this->document = new PrivyDocument;
-                break;
-            default:
-                throw DigitalSignatureDriverException::unknownDriver();
-                break;
-        }
-    }
-
-    /**
      * Get digital signature document
      *
      * @return Document
@@ -225,23 +182,6 @@ class DigitalSignature
     public function getDocument()
     {
         return $this->document;
-    }
-
-    /**
-     * Set digital signature document recipient
-     *
-     * @throws DigitalSignatureDriverException
-     */
-    public function setDocumentRecipient()
-    {
-        switch (config('digital-signature.default')) {
-            case 'privy':
-                $this->documentRecipient = new PrivyDocumentRecipient;
-                break;
-            default:
-                throw DigitalSignatureDriverException::unknownDriver();
-                break;
-        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Assetku\DigitalSignature\tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
+use Assetku\DigitalSignature\Mocks\UserMock;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 
@@ -16,25 +17,15 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithNormalPhone1()
     {
-        $data = [
-            'email'    => $email = $this->faker->safeEmail,
-            'phone'    => $phone = '08' . $this->randomPhoneNumbers(),
-            'selfie'   => $this->generateImage('selfie'),
-            'ktp'      => $this->generateImage('ktp'),
-            'identity' => [
-                'nik'           => mt_rand(111111111111111, 999999999999999) . rand(1, 9),
-                'name'          => $this->faker->name,
-                'tanggal_lahir' => $this->faker->date()
-            ]
-        ];
+        $mock = new UserMock('08');
 
         try {
-            $user = \DigitalSignature::register($data);
+            $user = \DigitalSignature::register($mock);
 
-            $phone = str_replace_first('0', '+62', $phone);
+            $phone = str_replace_first('0', '+62', $mock->getDigitalSignatureUserPhone());
 
             $this->assertTrue(
-                $user->getEmail() === $email &&
+                $user->getEmail() === $mock->getDigitalSignatureUserEmail() &&
                 $user->getPhone() === $phone &&
                 $user->getToken() !== null &&
                 $user->isStatusWaiting()
@@ -55,24 +46,14 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithNormalPhone2()
     {
-        $data = [
-            'email'    => $email = $this->faker->safeEmail,
-            'phone'    => $phone = '+628' . $this->randomPhoneNumbers(),
-            'selfie'   => $this->generateImage('selfie'),
-            'ktp'      => $this->generateImage('ktp'),
-            'identity' => [
-                'nik'           => mt_rand(111111111111111, 999999999999999) . rand(1, 9),
-                'name'          => $this->faker->name,
-                'tanggal_lahir' => $this->faker->date()
-            ]
-        ];
+        $mock = new UserMock('+628');
 
         try {
-            $user = \DigitalSignature::register($data);
+            $user = \DigitalSignature::register($mock);
 
             $this->assertTrue(
-                $user->getEmail() === $email &&
-                $user->getPhone() === $phone &&
+                $user->getEmail() === $mock->getDigitalSignatureUserEmail() &&
+                $user->getPhone() === $mock->getDigitalSignatureUserPhone() &&
                 $user->getToken() !== null &&
                 $user->isStatusWaiting()
             );
@@ -92,26 +73,16 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithAbnormalPhone1()
     {
-        $data = [
-            'email'    => $email = $this->faker->safeEmail,
-            'phone'    => $phone = '(+62)8' . $this->randomPhoneNumbers(),
-            'selfie'   => $this->generateImage('selfie'),
-            'ktp'      => $this->generateImage('ktp'),
-            'identity' => [
-                'nik'           => mt_rand(111111111111111, 999999999999999) . rand(1, 9),
-                'name'          => $this->faker->name,
-                'tanggal_lahir' => $this->faker->date()
-            ]
-        ];
+        $mock = new UserMock('(+62)8');
 
         try {
-            $user = \DigitalSignature::register($data);
+            $user = \DigitalSignature::register($mock);
 
-            $phone = str_replace_first('(', '', $phone);
+            $phone = str_replace_first('(', '', $mock->getDigitalSignatureUserPhone());
             $phone = str_replace_first(')', '', $phone);
 
             $this->assertTrue(
-                $user->getEmail() === $email &&
+                $user->getEmail() === $mock->getDigitalSignatureUserEmail() &&
                 $user->getPhone() === $phone &&
                 $user->getToken() !== null &&
                 $user->isStatusWaiting()
@@ -132,25 +103,15 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithAbnormalPhone2()
     {
-        $data = [
-            'email'    => $email = $this->faker->safeEmail,
-            'phone'    => $phone = '628' . $this->randomPhoneNumbers(),
-            'selfie'   => $this->generateImage('selfie'),
-            'ktp'      => $this->generateImage('ktp'),
-            'identity' => [
-                'nik'           => mt_rand(111111111111111, 999999999999999) . rand(1, 9),
-                'name'          => $this->faker->name,
-                'tanggal_lahir' => $this->faker->date()
-            ]
-        ];
+        $mock = new UserMock('628');
 
         try {
-            $user = \DigitalSignature::register($data);
+            $user = \DigitalSignature::register($mock);
 
-            $phone = "+{$phone}";
+            $phone = "+{$mock->getDigitalSignatureUserPhone()}";
 
             $this->assertTrue(
-                $user->getEmail() === $email &&
+                $user->getEmail() === $mock->getDigitalSignatureUserEmail() &&
                 $user->getPhone() === $phone &&
                 $user->getToken() !== null &&
                 $user->isStatusWaiting()
@@ -162,34 +123,5 @@ class RegistrationTest extends TestCase
         } catch (GuzzleException $e) {
             throw $e;
         }
-    }
-
-    /**
-     * Get random phone numbers
-     *
-     * @return int
-     */
-    protected function randomPhoneNumbers()
-    {
-        do {
-            $numbers = mt_rand(1111111111, 9999999999);
-        } while(substr($numbers, 0, 1) === '4');
-
-        return $numbers;
-    }
-
-    /**
-     * Generate random image for the given name
-     *
-     * @param  string  $name
-     * @return UploadedFile
-     */
-    protected function generateImage(string $name)
-    {
-        $fileName = "{$name}.jpeg";
-
-        \Storage::disk('public')->put($fileName, file_get_contents('https://picsum.photos/200?'.rand(1, 99)));
-
-        return new UploadedFile(\Storage::disk('public')->path($fileName), $fileName, 'image/jpeg', null, null, true);
     }
 }

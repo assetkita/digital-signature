@@ -1,7 +1,9 @@
 <?php
 
-namespace Assetku\DigitalSignature\Contracts;
+namespace Assetku\DigitalSignature\Services;
 
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
 use Assetku\DigitalSignature\Documents\Document;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusException;
@@ -11,18 +13,18 @@ use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
 use Assetku\DigitalSignature\Users\User;
 use GuzzleHttp\Exception\GuzzleException;
 
-interface DigitalSignature
+interface Service
 {
     /**
      * Register a user to digital signature provider
      *
-     * @param  array  $data
+     * @param  DigitalSignatureUser  $user
      * @return User
      * @throws GuzzleException
      * @throws DigitalSignatureValidatorException
      * @throws DigitalSignatureRegistrationException
      */
-    public function register(array $data);
+    public function register(DigitalSignatureUser $user);
 
     /**
      * Check the registered user status in digital signature provider
@@ -38,13 +40,13 @@ interface DigitalSignature
     /**
      * Upload a document to digital signature provider
      *
-     * @param  array  $data
+     * @param  DigitalSignatureDocument  $document
      * @return Document
      * @throws GuzzleException
      * @throws DigitalSignatureValidatorException
      * @throws DigitalSignatureUploadDocumentException
      */
-    public function uploadDocument(array $data);
+    public function uploadDocument(DigitalSignatureDocument $document);
 
     /**
      * Check the uploaded document status in digital signature provider

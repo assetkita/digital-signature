@@ -2,8 +2,8 @@
 
 namespace Assetku\DigitalSignature\Documents\Privy;
 
+use Assetku\DigitalSignature\DocumentRecipients\Privy\PrivyDocumentRecipient;
 use Assetku\DigitalSignature\Documents\Document;
-use Assetku\DigitalSignature\Documents\DocumentRecipients\Privy\PrivyDocumentRecipient;
 
 class PrivyDocument extends Document
 {

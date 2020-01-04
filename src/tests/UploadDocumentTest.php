@@ -4,7 +4,8 @@ namespace Assetku\DigitalSignature\tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use Assetku\DigitalSignature\Services\Privy;
+use Assetku\DigitalSignature\Mocks\DocumentMock;
+use Assetku\DigitalSignature\Services\PrivyService;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 
@@ -17,36 +18,18 @@ class UploadDocumentTest extends TestCase
      */
     public function testSuccessfulUploadDocument()
     {
-        $privyId = 'YO0880';
-        $type = 'Signer';
-
-        $data = [
-            'documentTitle' => 'Syarat & Ketentuan Pengguna',
-            'docType'       => 'Serial',
-            'owner'         => [
-                'privyId'         => $privyId,
-                'enterpriseToken' => (new Privy)->getEnterpriseToken()
-            ],
-            'document'      => $this->generatePdf('syarat & ketentuan'),
-            'recipients'    => [
-                [
-                    'privyId'         => $privyId,
-                    'type'            => $type,
-                    'enterpriseToken' => null
-                ]
-            ]
-        ];
+        $mock = new DocumentMock;
 
         try {
-            $document = \DigitalSignature::uploadDocument($data);
+            $document = \DigitalSignature::uploadDocument($mock);
 
             $recipient = $document->getRecipients()[0];
 
             $this->assertTrue(
                 $document->getToken() !== null &&
                 $document->getUrl() !== null &&
-                $recipient->getId() === $privyId &&
-                $recipient->getRecipientRole() === $type
+                $recipient->getId() === $mock->getDigitalSignatureDocumentOwnerAccountId() &&
+                $recipient->getRecipientRole() === $mock->getDigitalSignatureDocumentRecipients()[0]->getDigitalSignatureDocumentRecipientType()
             );
         } catch (DigitalSignatureUploadDocumentException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
