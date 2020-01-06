@@ -167,7 +167,7 @@ class DigitalSignature
     /**
      * Get digital signature user
      *
-     * @return User
+     * @return \Assetku\DigitalSignature\Users\User
      */
     public function getUser()
     {
@@ -177,7 +177,7 @@ class DigitalSignature
     /**
      * Get digital signature document
      *
-     * @return Document
+     * @return \Assetku\DigitalSignature\Documents\Document
      */
     public function getDocument()
     {
@@ -187,7 +187,7 @@ class DigitalSignature
     /**
      * Get digital signature document recipient
      *
-     * @return DocumentRecipient
+     * @return \Assetku\DigitalSignature\DocumentRecipients\DocumentRecipient
      */
     public function getDocumentRecipient()
     {
