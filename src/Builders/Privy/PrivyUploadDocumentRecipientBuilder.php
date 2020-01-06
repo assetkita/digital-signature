@@ -3,7 +3,7 @@
 namespace Assetku\DigitalSignature\Builders\Privy;
 
 use Assetku\DigitalSignature\Builders\Serializable;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipient;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipientSubject;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
 use Assetku\DigitalSignature\Rules\Privy\PrivyUploadDocumentRecipientRule;
 use Assetku\DigitalSignature\Validator;
@@ -23,9 +23,9 @@ class PrivyUploadDocumentRecipientBuilder implements Serializable
     /**
      * PrivyUploadDocumentRecipientBuilder constructor.
      *
-     * @param  DigitalSignatureDocumentRecipient  $documentRecipient
+     * @param  DigitalSignatureDocumentRecipientSubject  $documentRecipient
      */
-    public function __construct(DigitalSignatureDocumentRecipient $documentRecipient)
+    public function __construct(DigitalSignatureDocumentRecipientSubject $documentRecipient)
     {
         $this->recipientPrivyId = $documentRecipient->getDigitalSignatureDocumentRecipientAccountId();
         $this->recipientType = $documentRecipient->getDigitalSignatureDocumentRecipientType();

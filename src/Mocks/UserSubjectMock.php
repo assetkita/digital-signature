@@ -2,11 +2,11 @@
 
 namespace Assetku\DigitalSignature\Mocks;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Faker\Factory;
 use Illuminate\Http\UploadedFile;
 
-class UserMock implements DigitalSignatureUser
+class UserSubjectMock implements DigitalSignatureUserSubject
 {
     /**
      * @var Factory

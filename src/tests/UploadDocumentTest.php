@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use Assetku\DigitalSignature\Mocks\DocumentMock;
+use Assetku\DigitalSignature\Mocks\DocumentSubjectMock;
 use Assetku\DigitalSignature\Services\PrivyService;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
@@ -18,7 +18,7 @@ class UploadDocumentTest extends TestCase
      */
     public function testSuccessfulUploadDocument()
     {
-        $mock = new DocumentMock;
+        $mock = new DocumentSubjectMock;
 
         try {
             $document = \DigitalSignature::uploadDocument($mock);

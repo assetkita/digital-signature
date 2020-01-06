@@ -3,10 +3,10 @@
 namespace Assetku\DigitalSignature\Mocks;
 
 use Assetku\DigitalSignature\Builders\Privy\PrivyUploadDocumentRecipientBuilder;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
 use Illuminate\Http\UploadedFile;
 
-class DocumentMock implements DigitalSignatureDocument
+class DocumentSubjectMock implements DigitalSignatureDocumentSubject
 {
     /**
      * @var string
@@ -39,7 +39,7 @@ class DocumentMock implements DigitalSignatureDocument
     protected $recipients;
 
     /**
-     * DocumentMock constructor.
+     * DocumentSubjectMock constructor.
      */
     public function __construct()
     {
@@ -54,7 +54,7 @@ class DocumentMock implements DigitalSignatureDocument
         $this->document = $this->generatePdf('syarat & ketentuan');
 
         $this->recipients = [
-            new DocumentRecipientMock,
+            new DocumentRecipientSubjectMock,
         ];
     }
 

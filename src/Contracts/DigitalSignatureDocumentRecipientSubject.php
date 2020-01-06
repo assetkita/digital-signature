@@ -2,7 +2,7 @@
 
 namespace Assetku\DigitalSignature\Contracts;
 
-interface DigitalSignatureDocumentRecipient
+interface DigitalSignatureDocumentRecipientSubject
 {
     /**
      * @return string

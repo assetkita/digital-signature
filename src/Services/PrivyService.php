@@ -4,8 +4,8 @@ namespace Assetku\DigitalSignature\Services;
 
 use Assetku\DigitalSignature\Builders\Privy\PrivyRegistrationBuilder;
 use Assetku\DigitalSignature\Builders\Privy\PrivyUploadDocumentBuilder;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Assetku\DigitalSignature\Documents\Document;
 use Assetku\DigitalSignature\Documents\Privy\PrivyDocument;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
@@ -76,13 +76,13 @@ class PrivyService implements Service
     /**
      * Register a user to digital signature provider
      *
-     * @param  DigitalSignatureUser  $user
+     * @param  DigitalSignatureUserSubject  $user
      * @return User
      * @throws DigitalSignatureRegistrationException
      * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
-    public function register(DigitalSignatureUser $user)
+    public function register(DigitalSignatureUserSubject $user)
     {
         try {
             $registration = new PrivyRegistrationBuilder($user);
@@ -173,13 +173,13 @@ class PrivyService implements Service
     /**
      * Upload a document to digital signature provider
      *
-     * @param  DigitalSignatureDocument  $document
+     * @param  DigitalSignatureDocumentSubject  $document
      * @return Document
      * @throws DigitalSignatureUploadDocumentException
      * @throws DigitalSignatureValidatorException
      * @throws GuzzleException
      */
-    public function uploadDocument(DigitalSignatureDocument $document)
+    public function uploadDocument(DigitalSignatureDocumentSubject $document)
     {
         try {
             $uploadDocument = new PrivyUploadDocumentBuilder($document);

@@ -2,8 +2,8 @@
 
 namespace Assetku\DigitalSignature\Services;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Assetku\DigitalSignature\Documents\Document;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckRegistrationStatusException;
@@ -18,13 +18,13 @@ interface Service
     /**
      * Register a user to digital signature provider
      *
-     * @param  DigitalSignatureUser  $user
+     * @param  DigitalSignatureUserSubject  $user
      * @return User
      * @throws GuzzleException
      * @throws DigitalSignatureValidatorException
      * @throws DigitalSignatureRegistrationException
      */
-    public function register(DigitalSignatureUser $user);
+    public function register(DigitalSignatureUserSubject $user);
 
     /**
      * Check the registered user status in digital signature provider
@@ -40,13 +40,13 @@ interface Service
     /**
      * Upload a document to digital signature provider
      *
-     * @param  DigitalSignatureDocument  $document
+     * @param  DigitalSignatureDocumentSubject  $document
      * @return Document
      * @throws GuzzleException
      * @throws DigitalSignatureValidatorException
      * @throws DigitalSignatureUploadDocumentException
      */
-    public function uploadDocument(DigitalSignatureDocument $document);
+    public function uploadDocument(DigitalSignatureDocumentSubject $document);
 
     /**
      * Check the uploaded document status in digital signature provider

@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
-use Assetku\DigitalSignature\Mocks\UserMock;
+use Assetku\DigitalSignature\Mocks\UserSubjectMock;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\UploadedFile;
 
@@ -17,7 +17,7 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithNormalPhone1()
     {
-        $mock = new UserMock('08');
+        $mock = new UserSubjectMock('08');
 
         try {
             $user = \DigitalSignature::register($mock);
@@ -46,7 +46,7 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithNormalPhone2()
     {
-        $mock = new UserMock('+628');
+        $mock = new UserSubjectMock('+628');
 
         try {
             $user = \DigitalSignature::register($mock);
@@ -73,7 +73,7 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithAbnormalPhone1()
     {
-        $mock = new UserMock('(+62)8');
+        $mock = new UserSubjectMock('(+62)8');
 
         try {
             $user = \DigitalSignature::register($mock);
@@ -103,7 +103,7 @@ class RegistrationTest extends TestCase
      */
     public function testSuccessfulRegistrationWithAbnormalPhone2()
     {
-        $mock = new UserMock('628');
+        $mock = new UserSubjectMock('628');
 
         try {
             $user = \DigitalSignature::register($mock);

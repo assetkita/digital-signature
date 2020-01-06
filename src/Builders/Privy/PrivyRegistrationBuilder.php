@@ -3,7 +3,7 @@
 namespace Assetku\DigitalSignature\Builders\Privy;
 
 use Assetku\DigitalSignature\Builders\Serializable;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
 use Assetku\DigitalSignature\Rules\Privy\PrivyRegisterRule;
 use Assetku\DigitalSignature\Validator;
@@ -49,10 +49,10 @@ class PrivyRegistrationBuilder implements Serializable
     /**
      * PrivyRegistrationBuilder constructor.
      *
-     * @param  DigitalSignatureUser  $user
+     * @param  DigitalSignatureUserSubject  $user
      * @throws DigitalSignatureValidatorException
      */
-    public function __construct(DigitalSignatureUser $user)
+    public function __construct(DigitalSignatureUserSubject $user)
     {
         $this->email = $user->getDigitalSignatureUserEmail();
         $this->phone = $user->getDigitalSignatureUserPhone();
