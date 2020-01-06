@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\Mocks;
 
 use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipientSubject;
 
-class DocumentRecipientSubjectMock implements DigitalSignatureDocumentRecipientSubject
+class DocumentRecipientMock implements DigitalSignatureDocumentRecipientSubject
 {
     /**
      * @var string
@@ -17,7 +17,7 @@ class DocumentRecipientSubjectMock implements DigitalSignatureDocumentRecipientS
     protected $recipientType;
 
     /**
-     * DocumentSubjectMock constructor.
+     * DocumentMock constructor.
      */
     public function __construct()
     {

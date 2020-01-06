@@ -6,7 +6,7 @@ use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Faker\Factory;
 use Illuminate\Http\UploadedFile;
 
-class UserSubjectMock implements DigitalSignatureUserSubject
+class UserMock implements DigitalSignatureUserSubject
 {
     /**
      * @var Factory
