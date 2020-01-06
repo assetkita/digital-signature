@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\Contracts;
 
 use Illuminate\Http\UploadedFile;
 
-interface DigitalSignatureUser
+interface DigitalSignatureUserSubject
 {
     /**
      * @return string

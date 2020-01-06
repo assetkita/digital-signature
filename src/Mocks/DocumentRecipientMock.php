@@ -2,9 +2,9 @@
 
 namespace Assetku\DigitalSignature\Mocks;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipient;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipientSubject;
 
-class DocumentRecipientMock implements DigitalSignatureDocumentRecipient
+class DocumentRecipientMock implements DigitalSignatureDocumentRecipientSubject
 {
     /**
      * @var string

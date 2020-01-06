@@ -4,7 +4,7 @@ namespace Assetku\DigitalSignature\Contracts;
 
 use Illuminate\Http\UploadedFile;
 
-interface DigitalSignatureDocument
+interface DigitalSignatureDocumentSubject
 {
     /**
      * @return string
@@ -27,7 +27,7 @@ interface DigitalSignatureDocument
     public function getDigitalSignatureDocumentFile();
 
     /**
-     * @return DigitalSignatureDocumentRecipient[]
+     * @return DigitalSignatureDocumentRecipientSubject[]
      */
     public function getDigitalSignatureDocumentRecipients();
 }

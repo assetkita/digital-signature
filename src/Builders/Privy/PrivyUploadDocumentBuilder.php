@@ -3,8 +3,8 @@
 namespace Assetku\DigitalSignature\Builders\Privy;
 
 use Assetku\DigitalSignature\Builders\Serializable;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipient;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentRecipientSubject;
 use Assetku\DigitalSignature\DocumentRecipients\Privy\PrivyDocumentRecipient;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
 use Assetku\DigitalSignature\Rules\Privy\PrivyUploadDocumentRule;
@@ -46,10 +46,10 @@ class PrivyUploadDocumentBuilder implements Serializable
     /**
      * PrivyUploadDocumentBuilder constructor.
      *
-     * @param  DigitalSignatureDocument  $document
+     * @param  DigitalSignatureDocumentSubject  $document
      * @throws DigitalSignatureValidatorException
      */
-    public function __construct(DigitalSignatureDocument $document)
+    public function __construct(DigitalSignatureDocumentSubject $document)
     {
         $this->title = $document->getDigitalSignatureDocumentTitle();
         $this->type = $document->getDigitalSignatureDocumentType();
@@ -57,7 +57,7 @@ class PrivyUploadDocumentBuilder implements Serializable
         $this->ownerEnterpriseToken = \DigitalSignature::getEnterpriseToken();
         $this->document = $document->getDigitalSignatureDocumentFile();
 
-        $this->recipients = array_map(function (DigitalSignatureDocumentRecipient $documentRecipient) {
+        $this->recipients = array_map(function (DigitalSignatureDocumentRecipientSubject $documentRecipient) {
             return new PrivyUploadDocumentRecipientBuilder($documentRecipient);
         }, $document->getDigitalSignatureDocumentRecipients());
 

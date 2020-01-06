@@ -2,8 +2,8 @@
 
 namespace Assetku\DigitalSignature;
 
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureUser;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject;
 use Assetku\DigitalSignature\DocumentRecipients\DocumentRecipient;
 use Assetku\DigitalSignature\Documents\Document;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureCheckDocumentStatusException;
@@ -59,13 +59,13 @@ class DigitalSignature
     /**
      * Register the user to digital signature provider
      *
-     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureUser  $user
+     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureUserSubject  $user
      * @return \Assetku\DigitalSignature\Users\User
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function register(DigitalSignatureUser $user)
+    public function register(DigitalSignatureUserSubject $user)
     {
         try {
             return $this->service->register($user);
@@ -103,13 +103,13 @@ class DigitalSignature
     /**
      * Upload a document to digital signature provider
      *
-     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureDocument  $document
+     * @param  \Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject  $document
      * @return \Assetku\DigitalSignature\Documents\Document
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException
      * @throws \Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function uploadDocument(DigitalSignatureDocument $document)
+    public function uploadDocument(DigitalSignatureDocumentSubject $document)
     {
         try {
             return $this->service->uploadDocument($document);

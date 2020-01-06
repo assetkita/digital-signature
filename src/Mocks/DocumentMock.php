@@ -3,10 +3,10 @@
 namespace Assetku\DigitalSignature\Mocks;
 
 use Assetku\DigitalSignature\Builders\Privy\PrivyUploadDocumentRecipientBuilder;
-use Assetku\DigitalSignature\Contracts\DigitalSignatureDocument;
+use Assetku\DigitalSignature\Contracts\DigitalSignatureDocumentSubject;
 use Illuminate\Http\UploadedFile;
 
-class DocumentMock implements DigitalSignatureDocument
+class DocumentMock implements DigitalSignatureDocumentSubject
 {
     /**
      * @var string
