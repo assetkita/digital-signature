@@ -1,7 +1,9 @@
 <?php
 
-namespace Assetku\DigitalSignature\tests;
+namespace Assetku\DigitalSignature\Tests;
 
+use Assetku\DigitalSignature\Facades\DigitalSignatureService;
+use Assetku\DigitalSignature\Providers\DigitalSignatureServiceProvider;
 use Faker\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
@@ -37,7 +39,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Assetku\DigitalSignature\Providers\DigitalSignatureServiceProvider::class
+            DigitalSignatureServiceProvider::class,
         ];
     }
 
@@ -50,7 +52,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'DigitalSignature' => \Assetku\DigitalSignature\Facades\DigitalSignature::class
+            'DigitalSignatureService' => DigitalSignatureService::class,
         ];
     }
 
@@ -62,10 +64,10 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app->useEnvironmentPath(__DIR__.'/../..')
+        $app->useEnvironmentPath(__DIR__.'/../../digital-signature')
             ->loadEnvironmentFrom('.env.testing')
             ->bootstrapWith([
-                LoadEnvironmentVariables::class
+                LoadEnvironmentVariables::class,
             ]);
 
         $app['config']->set('digital-signature.default', env('DIGITAL_SIGNATURE_DRIVER'));

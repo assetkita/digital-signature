@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetku\DigitalSignature\tests;
+namespace Assetku\DigitalSignature\Tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
@@ -20,7 +20,7 @@ class RegistrationTest extends TestCase
         $mock = new UserMock('08');
 
         try {
-            $user = \DigitalSignature::register($mock);
+            $user = \DigitalSignatureService::register($mock);
 
             $phone = str_replace_first('0', '+62', $mock->getDigitalSignatureUserPhone());
 
@@ -49,7 +49,7 @@ class RegistrationTest extends TestCase
         $mock = new UserMock('+628');
 
         try {
-            $user = \DigitalSignature::register($mock);
+            $user = \DigitalSignatureService::register($mock);
 
             $this->assertTrue(
                 $user->getEmail() === $mock->getDigitalSignatureUserEmail() &&
@@ -76,7 +76,7 @@ class RegistrationTest extends TestCase
         $mock = new UserMock('(+62)8');
 
         try {
-            $user = \DigitalSignature::register($mock);
+            $user = \DigitalSignatureService::register($mock);
 
             $phone = str_replace_first('(', '', $mock->getDigitalSignatureUserPhone());
             $phone = str_replace_first(')', '', $phone);
@@ -106,7 +106,7 @@ class RegistrationTest extends TestCase
         $mock = new UserMock('628');
 
         try {
-            $user = \DigitalSignature::register($mock);
+            $user = \DigitalSignatureService::register($mock);
 
             $phone = "+{$mock->getDigitalSignatureUserPhone()}";
 

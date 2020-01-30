@@ -15,7 +15,7 @@ use Assetku\DigitalSignature\Services\Service;
 use Assetku\DigitalSignature\Users\User;
 use GuzzleHttp\Exception\GuzzleException;
 
-class DigitalSignature
+class DigitalSignatureService
 {
     /**
      * @var Driver
@@ -43,7 +43,7 @@ class DigitalSignature
     protected $documentRecipient;
 
     /**
-     * DigitalSignature constructor.
+     * DigitalSignatureService constructor.
      *
      */
     public function __construct()

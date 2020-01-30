@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetku\DigitalSignature\tests;
+namespace Assetku\DigitalSignature\Tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureUploadDocumentException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
@@ -21,7 +21,7 @@ class UploadDocumentTest extends TestCase
         $mock = new DocumentMock;
 
         try {
-            $document = \DigitalSignature::uploadDocument($mock);
+            $document = \DigitalSignatureService::uploadDocument($mock);
 
             $recipient = $document->getRecipients()[0];
 
