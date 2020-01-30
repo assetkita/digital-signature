@@ -2,7 +2,7 @@
 
 namespace Assetku\DigitalSignature\Providers;
 
-use Assetku\DigitalSignature\DigitalSignature;
+use Assetku\DigitalSignature\DigitalSignatureService;
 use Assetku\DigitalSignature\Driver;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,7 +25,7 @@ class DigitalSignatureServiceProvider extends ServiceProvider
 
         // Register a facade shared binding in the container.
         $this->app->singleton('assetkita.digital_signature', function () {
-            return new DigitalSignature;
+            return new DigitalSignatureService;
         });
     }
 
@@ -38,12 +38,12 @@ class DigitalSignatureServiceProvider extends ServiceProvider
     {
         // publish package configuration
         $this->publishes([
-            __DIR__.'/../config/digital-signature.php' => config_path('digital-signature.php')
+            __DIR__.'/../config/digital-signature.php' => config_path('digital-signature.php'),
         ], 'config');
 
         // publish package views
         $this->publishes([
-            __DIR__.'/../views' => resource_path('views/vendor/digital-signature')
+            __DIR__.'/../views' => resource_path('views/vendor/digital-signature'),
         ], 'views');
     }
 }

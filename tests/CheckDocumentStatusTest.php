@@ -18,7 +18,7 @@ class CheckDocumentStatusTest extends TestCase
         $token = 'da6bb9c5e7b48a76aee4e6591cc07c2e2408e93e262ac892eade5a7a93977654';
 
         try {
-            $document = \DigitalSignature::checkDocumentStatus($token);
+            $document = \DigitalSignatureService::checkDocumentStatus($token);
         } catch (DigitalSignatureCheckDocumentStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {
@@ -40,7 +40,7 @@ class CheckDocumentStatusTest extends TestCase
         $token = '6bb67943f43a9b24139046fd332b442b7aed5270edb3031842b650089647ecf3';
 
         try {
-            $document = \DigitalSignature::checkDocumentStatus($token);
+            $document = \DigitalSignatureService::checkDocumentStatus($token);
         } catch (DigitalSignatureCheckDocumentStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {

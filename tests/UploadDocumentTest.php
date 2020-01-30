@@ -21,7 +21,7 @@ class UploadDocumentTest extends TestCase
         $mock = new DocumentMock;
 
         try {
-            $document = \DigitalSignature::uploadDocument($mock);
+            $document = \DigitalSignatureService::uploadDocument($mock);
 
             $recipient = $document->getRecipients()[0];
 
