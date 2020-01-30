@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetku\DigitalSignature\tests;
+namespace Assetku\DigitalSignature\Tests;
 
 use Faker\Factory;
 use Illuminate\Foundation\Application;
@@ -62,7 +62,7 @@ abstract class TestCase extends OrchestraTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app->useEnvironmentPath(__DIR__.'/../..')
+        $app->useEnvironmentPath(__DIR__.'/../digital-signature')
             ->loadEnvironmentFrom('.env.testing')
             ->bootstrapWith([
                 LoadEnvironmentVariables::class

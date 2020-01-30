@@ -1,6 +1,6 @@
 <?php
 
-namespace Assetku\DigitalSignature\tests;
+namespace Assetku\DigitalSignature\Tests;
 
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureRegistrationException;
 use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;

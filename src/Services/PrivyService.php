@@ -16,7 +16,7 @@ use Assetku\DigitalSignature\Exceptions\DigitalSignatureValidatorException;
 use Assetku\DigitalSignature\Users\Privy\PrivyUser;
 use Assetku\DigitalSignature\Users\User;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class PrivyService implements Service
 {
