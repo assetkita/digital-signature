@@ -48,7 +48,7 @@ class DigitalSignatureService
      */
     public function __construct()
     {
-        $this->driver = \App::make('assetkita.digital_signature_driver');
+        $this->driver = \App::make('digital_signature_driver');
 
         $this->service = $this->driver->service();
         $this->user = $this->driver->user();
