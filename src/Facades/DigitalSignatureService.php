@@ -13,6 +13,6 @@ class DigitalSignatureService extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'assetkita.digital_signature';
+        return 'digital_signature';
     }
 }

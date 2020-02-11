@@ -54,7 +54,7 @@ class PrivyUploadDocumentBuilder implements Serializable
         $this->title = $document->getDigitalSignatureDocumentTitle();
         $this->type = $document->getDigitalSignatureDocumentType();
         $this->ownerPrivyId = $document->getDigitalSignatureDocumentOwnerAccountId();
-        $this->ownerEnterpriseToken = \DigitalSignature::getEnterpriseToken();
+        $this->ownerEnterpriseToken = \DigitalSignatureService::getEnterpriseToken();
         $this->document = $document->getDigitalSignatureDocumentFile();
 
         $this->recipients = array_map(function (DigitalSignatureDocumentRecipientSubject $documentRecipient) {

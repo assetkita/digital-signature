@@ -49,7 +49,7 @@ class DocumentMock implements DigitalSignatureDocumentSubject
 
         $this->ownerPrivyId = 'YO0880';
 
-        $this->ownerEnterpriseToken = \DigitalSignature::getEnterpriseToken();
+        $this->ownerEnterpriseToken = \DigitalSignatureService::getEnterpriseToken();
 
         $this->document = $this->generatePdf('syarat & ketentuan');
 

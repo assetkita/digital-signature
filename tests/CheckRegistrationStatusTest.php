@@ -62,7 +62,7 @@ class CheckRegistrationStatusTest extends TestCase
         $token = '02f70eaeaa0bc10d50d8181347a00af1b1a87fa63d3da8d37ceb58eafa366ab0';
 
         try {
-            $user = \DigitalSignature::checkRegistrationStatus($token);
+            $user = \DigitalSignatureService::checkRegistrationStatus($token);
         } catch (DigitalSignatureCheckRegistrationStatusException $e) {
             dd($e->getCode(), $e->getMessage(), $e->getErrors());
         } catch (DigitalSignatureValidatorException $e) {
