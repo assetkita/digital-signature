@@ -46,7 +46,7 @@
         "Assetku\\DigitalSignature\\Providers\\DigitalSignatureServiceProvider"
       ],
       "aliases": {
-        "DigitalSignature": "Assetku\\DigitalSignature\\Facades\\DigitalSignature"
+        "DigitalSignatureService": "Assetku\\DigitalSignature\\Facades\\DigitalSignatureService"
       }
     }
   },
