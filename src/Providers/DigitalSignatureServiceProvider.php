@@ -19,12 +19,12 @@ class DigitalSignatureServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/digital-signature.php', 'digital-signature');
 
         // register a driver binding with the container.
-        $this->app->bind('assetkita.digital_signature_driver', function () {
+        $this->app->bind('digital_signature_driver', function () {
             return new Driver(config('digital-signature.default'));
         });
 
         // Register a facade shared binding in the container.
-        $this->app->singleton('assetkita.digital_signature', function () {
+        $this->app->singleton('digital_signature', function () {
             return new DigitalSignatureService;
         });
     }
