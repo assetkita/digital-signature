@@ -18,9 +18,9 @@
   "require": {
     "php": ">=7.0",
     "guzzlehttp/guzzle": "6.*",
-    "illuminate/contracts": "5.5.*",
-    "illuminate/support": "5.5.*",
-    "illuminate/validation": "5.5.*",
+    "illuminate/contracts": "5.*",
+    "illuminate/support": "5.*",
+    "illuminate/validation": "5.*",
     "psr/http-message": "1.*",
     "symfony/http-foundation": "3.*",
     "symfony/http-kernel": "3.*"
